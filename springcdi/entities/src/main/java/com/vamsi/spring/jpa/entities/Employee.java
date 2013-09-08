@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Employee {
@@ -70,7 +71,7 @@ public class Employee {
 		int result = 1;
 		result = prime * result
 				+ ((getDateOfHire() == null) ? 0 : getDateOfHire().hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
 		result = prime * result
 				+ ((getLastName() == null) ? 0 : getLastName().hashCode());
 		return result;
@@ -90,10 +91,10 @@ public class Employee {
 				return false;
 		} else if (!getDateOfHire().equals(other.getDateOfHire()))
 			return false;
-		if (id == null) {
+		if (getId() == null) {
 			if (other.getId() != null)
 				return false;
-		} else if (!id.equals(other.getId()))
+		} else if (!getId().equals(other.getId()))
 			return false;
 		if (getLastName() == null) {
 			if (other.getLastName() != null)
