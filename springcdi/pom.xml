@@ -12,6 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>3.2.3.RELEASE</org.springframework.version>
+		<project.hibernate.version>4.2.5.Final</project.hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -34,11 +35,6 @@
 			<version>4.11</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>1.0.1B</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.resource</groupId>
 			<artifactId>connector</artifactId>
 			<version>1.0</version>
@@ -47,11 +43,6 @@
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.5.0-b01</version>
 		</dependency>
 		<!-- Core utilities used by other modules. Define this if you use Spring 
 			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
@@ -189,6 +180,27 @@
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<version>1.0.0.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${project.hibernate.version}</version>
+			
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 <plugins>
@@ -214,5 +226,12 @@
 			<id>codelds</id>
 			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
 		</repository>
+		
+		<repository>
+<id>java.net-Public</id>
+<name>Maven Java Net Snapshots and Releases</name>
+<url>https://maven.java.net/content/groups/public/</url>
+
+</repository> 
 	</repositories>
 </project>
