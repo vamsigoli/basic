@@ -8,4 +8,18 @@
   </parent>
   <groupId>com.vamsi.spring.entities</groupId>
   <artifactId>entities</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.derby</groupId>
+  		<artifactId>derby</artifactId>
+  		<version>10.10.1.1</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.derby</groupId>
+  		<artifactId>derbyclient</artifactId>
+  		<version>10.10.1.1</version>
+  		<scope>test</scope>
+  	</dependency>
+  </dependencies>
 </project>

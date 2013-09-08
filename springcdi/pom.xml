@@ -13,6 +13,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>3.2.3.RELEASE</org.springframework.version>
 		<project.hibernate.version>4.2.5.Final</project.hibernate.version>
+		<log4j-over-slf4j-version>1.7.5</log4j-over-slf4j-version>
+		<logback-core-version>1.0.13</logback-core-version>
+		<logback-classic-version>1.0.13</logback-classic-version>
+		
 	</properties>
 
 	<dependencies>
@@ -189,7 +193,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${project.hibernate.version}</version>
-			
+
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -198,22 +202,33 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.5</version>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>${log4j-over-slf4j-version}</version>
 		</dependency>
+		<dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback-core-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback-classic-version}</version>
+            </dependency>
+	
 	</dependencies>
 	<build>
-<plugins>
-<plugin>
-<groupId>org.apache.maven.plugins</groupId>
-<artifactId>maven-compiler-plugin</artifactId>
-<configuration>
-<source>1.7</source>
-<target>1.7</target>
-</configuration>
-</plugin>
-</plugins>
-</build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -226,12 +241,12 @@
 			<id>codelds</id>
 			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
 		</repository>
-		
-		<repository>
-<id>java.net-Public</id>
-<name>Maven Java Net Snapshots and Releases</name>
-<url>https://maven.java.net/content/groups/public/</url>
 
-</repository> 
+		<repository>
+			<id>java.net-Public</id>
+			<name>Maven Java Net Snapshots and Releases</name>
+			<url>https://maven.java.net/content/groups/public/</url>
+
+		</repository>
 	</repositories>
 </project>

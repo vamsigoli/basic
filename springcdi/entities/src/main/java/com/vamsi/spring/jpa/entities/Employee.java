@@ -3,12 +3,15 @@ package com.vamsi.spring.jpa.entities;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Employee {
+	@SequenceGenerator(name = "EMPLOYEE_ID_GENERATOR", sequenceName = "EMP_SEQ")
 	@Id
+	@GeneratedValue(generator = "EMPLOYEE_ID_GENERATOR")
 	private Integer id;
 	private String lastName;
 	private Date dateOfHire;
