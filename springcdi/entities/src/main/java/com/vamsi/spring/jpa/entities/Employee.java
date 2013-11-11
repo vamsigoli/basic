@@ -6,15 +6,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Employee {
-	@SequenceGenerator(name = "EMPLOYEE_ID_GENERATOR", sequenceName = "EMP_SEQ")
+	@SequenceGenerator(name = "EMPLOYEE_ID_GENERATOR", sequenceName = "EMP_SEQ" ,initialValue=10 ,allocationSize=1)
 	@Id
 	@GeneratedValue(generator = "EMPLOYEE_ID_GENERATOR")
 	private Integer id;
+	
 	private String lastName;
+	
+	@Temporal(TemporalType.DATE)
 	private Date dateOfHire;
+	
 	private String emailAddress;
 	private float salary;
 

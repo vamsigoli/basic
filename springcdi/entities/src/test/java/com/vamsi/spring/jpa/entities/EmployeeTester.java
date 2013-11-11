@@ -44,21 +44,23 @@ public class EmployeeTester {
 
 	private EntityManagerFactory emFactory;
 	private EntityManager em;
-	private static EntityTransaction mTrx;
+	private  EntityTransaction mTrx;
 
-	public static EntityTransaction getTrx() {
+	public  EntityTransaction getTrx() {
 		return mTrx;
 	}
 
-	public static void setTrx(EntityTransaction mTrx) {
-		EmployeeTester.mTrx = mTrx;
+	public void setTrx(EntityTransaction mTrx) {
+		this.mTrx = mTrx;
 	}
 
 	@Before
 	public void setUp() throws Exception {
 		try {
-			logger.info("Building JPA EntityManager for unit tests");
+			
 			setEntityManagerFactory(Persistence.createEntityManagerFactory("entities"));
+			logger.info("Building JPA EntityManager for unit tests. this is application managed em");
+			logger.info("what matters the creation of the em.  not the emf");
 			setEntityManager(getEntityManagerFactory().createEntityManager());
 			
 			logger.info("Start a new transaction for the test");
@@ -72,7 +74,7 @@ public class EmployeeTester {
 
 	@After
 	public void tearDown() throws Exception {
-		logger.info("Shuting down Hibernate JPA layer.");
+		logger.info("Shuting down Hibernate JPA layer. closing the em is the responsibility of the app");
 		if (em != null) {
 			em.close();
 		}
