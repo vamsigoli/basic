@@ -16,7 +16,7 @@ public class EmployeeService {
 
 	public Employee createEmployee(int id, String name, long salary) {
 		Employee emp = new Employee();
-		emp.setId(id);
+		//emp.setId(id);
 		emp.setLastName(name);
 		emp.setSalary(salary);
 		em.persist(emp);
