@@ -18,9 +18,13 @@
 
 	</properties>
 	<dependencies>
-		<!-- hibernate is not yet ready for jpa 2.1 <dependency> <groupId>org.hibernate</groupId> 
-			<artifactId>hibernate-entitymanager</artifactId> <version>${project.hibernate.version}</version> 
-			</dependency> -->
+		<!-- hibernate is not yet ready for jpa 2.1 unable to get it working on glassfish
+		using only for testing-->
+		<dependency> <groupId>org.hibernate</groupId> 
+			<artifactId>hibernate-entitymanager</artifactId> 
+			<version>${project.hibernate.version}</version> 
+			<scope>test</scope>
+			</dependency> 
 
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>

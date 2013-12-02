@@ -6,6 +6,7 @@
 	<persistence-unit name="entities" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.vamsi.spring.jpa.entities.Employee</class>
+		<class>com.vamsi.spring.jpa.entities.ParkingSpace</class>
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:derby:memory:entities;create=true" />
 			<property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />

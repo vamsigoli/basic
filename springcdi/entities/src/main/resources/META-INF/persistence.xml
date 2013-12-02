@@ -8,5 +8,6 @@
 		<!--  hibernate is not yet ready for glassfish 4<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
 		<jta-data-source>jdbc/empDS</jta-data-source>
 		<class>com.vamsi.spring.jpa.entities.Employee</class>
+		<class>com.vamsi.spring.jpa.entities.ParkingSpace</class>
 	</persistence-unit>
 </persistence>
