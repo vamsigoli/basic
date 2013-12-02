@@ -32,6 +32,12 @@ public class CreateEmployee extends HttpServlet {
 	 @Resource
 	    TransactionSynchronizationRegistry tsr;
 	 
+	 //both session bean and the no session bean will work without any problem. 
+	 //session bean has transaction automatically injected while cdi bean has to explicitly 
+	 //start the transaction using @Transactional annotation
+	 
+	 //@Transactional on servlet method did not work.
+	 
 	 @Inject
 	 EmployeeBean empNoSessionBean;
 	
