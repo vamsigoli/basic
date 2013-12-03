@@ -21,8 +21,9 @@ public class Employee {
 	private Integer id;
 	
 	
-	@OneToOne(optional=false, cascade=CascadeType.PERSIST )
-	//by keeping optional as false, the Employee table that gets created wil have PSPACE_ID as not null
+	@OneToOne(optional=true, cascade=CascadeType.PERSIST )
+	//by keeping optional as false, the Employee table that gets created will have PSPACE_ID as not null
+	//by keeping true, we can create employee without parking space
 	
 	@JoinColumn(name="PSPACE_ID"  ,unique=true)
 	//by keeping unique as true we are adding a unique constraint on PSPACE_ID in EMPLOYEE table.
@@ -76,7 +77,7 @@ public class Employee {
 	}
 	
 	//see the access restriction. setId is marked private
-
+@SuppressWarnings("unused")
 	private void setId(Integer id) {
 		this.id = id;
 	}
