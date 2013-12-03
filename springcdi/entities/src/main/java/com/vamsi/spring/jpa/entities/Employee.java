@@ -2,8 +2,12 @@ package com.vamsi.spring.jpa.entities;
 
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -12,7 +16,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.vamsi.spring.jpa.types.EmployeeType;
+
 @Entity
+@Access(AccessType.FIELD)
+//the other accesstype is AccessType.PROPERTY to be annotated against a method
+
 public class Employee {
 	@SequenceGenerator(name = "EMPLOYEE_ID_GENERATOR", 
 			sequenceName = "EMP_SEQ" ,initialValue=10 ,allocationSize=1)
@@ -21,13 +30,24 @@ public class Employee {
 	private Integer id;
 	
 	
-	@OneToOne(optional=false, cascade=CascadeType.PERSIST )
-	//by keeping optional as false, the Employee table that gets created wil have PSPACE_ID as not null
+	@OneToOne(optional=true, cascade=CascadeType.PERSIST )
+	//by keeping optional as false, the Employee table that gets created will have PSPACE_ID as not null
+	//by keeping true, we can create employee without parking space
 	
 	@JoinColumn(name="PSPACE_ID"  ,unique=true)
-	//by keeping unique as true we are adding a unique constraint on PSPACE_ID in EMPLOYEE table.
-	 
 	private ParkingSpace parking;
+	//by keeping unique as true we are adding a unique constraint on PSPACE_ID in EMPLOYEE table.
+	
+	
+	private String lastName;
+	private String emailAddress;
+	private float salary;
+	// all fields are part of the entity. a field without annotation has default annotation as Basic
+	//if we donot want any field not to be persisted, we should mark it as @Transient
+	
+	
+	@Enumerated(EnumType.ORDINAL)
+	private EmployeeType employeeType;
 	
 	public ParkingSpace getParking() {
 		return parking;
@@ -37,13 +57,10 @@ public class Employee {
 		this.parking = parking;
 	}
 
-	private String lastName;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dateOfHire;
 	
-	private String emailAddress;
-	private float salary;
 
 	public float getSalary() {
 		return salary;
@@ -76,7 +93,7 @@ public class Employee {
 	}
 	
 	//see the access restriction. setId is marked private
-
+@SuppressWarnings("unused")
 	private void setId(Integer id) {
 		this.id = id;
 	}

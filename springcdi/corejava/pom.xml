@@ -4,12 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.vamsi.spring</groupId>
-    <artifactId>springcdi</artifactId>
+  <artifactId>springcdi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.vamsi.spring</groupId>
+  <groupId>com.vamsi.spring.springcdi</groupId>
   <artifactId>corejava</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>corejava</name>
   <url>http://maven.apache.org</url>
   <properties>

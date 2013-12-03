@@ -137,7 +137,7 @@ public class EmployeeTester {
 
 	}
 	
-	//@Test(expected=PersistenceException.class)
+	@Test(expected=PersistenceException.class)
 	public void createEmployeeWithParking() {
 
 		Employee employee = new Employee();

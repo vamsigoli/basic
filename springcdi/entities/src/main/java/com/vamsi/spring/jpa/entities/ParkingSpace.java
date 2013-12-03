@@ -35,6 +35,8 @@ public class ParkingSpace {
 	public int getId() {
         return id;
     }
+	
+	@SuppressWarnings("unused")
     
     private void setId(int id) {
         this.id = id;
