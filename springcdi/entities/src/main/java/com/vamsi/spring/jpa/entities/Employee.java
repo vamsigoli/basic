@@ -44,6 +44,8 @@ public class Employee {
 	private float salary;
 	// all fields are part of the entity. a field without annotation has default annotation as Basic
 	//if we donot want any field not to be persisted, we should mark it as @Transient
+	//difference between transient keyword and @Transient is that annotation is related to persistance only
+	//if the field is not marked as transient keyword, it is transmitted across serialization.
 	
 	
 	@Enumerated(EnumType.ORDINAL)
