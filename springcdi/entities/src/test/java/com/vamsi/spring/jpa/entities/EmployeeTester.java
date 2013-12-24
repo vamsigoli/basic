@@ -57,7 +57,7 @@ public class EmployeeTester {
 public static void setupTestClass() {	
 			logger.info("Building JPA EntityManager for unit tests. this is application managed em");
 			logger.info("what matters is the creation of the em.  not the emf");
-	setEntityManagerFactory( Persistence.createEntityManagerFactory("entities"));
+	setEntityManagerFactory( Persistence.createEntityManagerFactory("entities-test"));
 			setEntityManager(getEntityManagerFactory().createEntityManager());
 			
 		
@@ -78,6 +78,21 @@ public static void setupTestClass() {
 		if (emFactory != null) {
 			emFactory.close();
 		}
+	}
+	
+	
+	@Test
+	public void createDepartment() {
+		
+		Department dept = new Department();
+		dept.setName("Computer Science");
+
+		getEntityManager().persist(dept);
+		
+		logger.info("department created as " + dept.getId());
+		
+		
+		
 	}
 
 	

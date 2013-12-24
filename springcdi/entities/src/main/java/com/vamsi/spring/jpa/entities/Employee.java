@@ -11,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -39,6 +41,11 @@ public class Employee {
 	private ParkingSpace parking;
 	//by keeping unique as true we are adding a unique constraint on PSPACE_ID in EMPLOYEE table.
 	
+	@ManyToOne
+	@JoinColumn(name="DEPT_ID")
+	//its not unique. there will be many employees for a department. its a bidirectional relationship
+	//department is non owning side and will have @mappedBy 
+	private Department department;
 	
 	private String lastName;
 	private String emailAddress;
@@ -167,6 +174,14 @@ public class Employee {
 		} else if (!getLastName().equals(other.getLastName()))
 			return false;
 		return true;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+	 this.department = department;	
 	}
 
 }
