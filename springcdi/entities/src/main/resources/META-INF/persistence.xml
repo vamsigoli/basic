@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
-<persistence 
-	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-	version="2.0">
+<persistence version="2.1" 
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
 	<persistence-unit name="entities" transaction-type="JTA">
 		<!--  hibernate is not yet ready for glassfish 4<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
 		<jta-data-source>jdbc/empDS</jta-data-source>
+		<class>com.vamsi.spring.jpa.entities.Address</class>
 		<class>com.vamsi.spring.jpa.entities.Employee</class>
 		<class>com.vamsi.spring.jpa.entities.ParkingSpace</class>
+		
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 	</persistence-unit>
 </persistence>

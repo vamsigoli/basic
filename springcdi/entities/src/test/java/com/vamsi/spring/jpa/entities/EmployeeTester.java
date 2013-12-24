@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.PersistenceUtil;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,9 +18,13 @@ import javax.persistence.criteria.Root;
 
 import static org.junit.Assert.*;
 
+import org.hibernate.jpa.internal.util.PersistenceUtilHelper;
+import org.hibernate.property.Getter;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class EmployeeTester {
@@ -27,54 +32,46 @@ public class EmployeeTester {
 	public static final Logger logger = LoggerFactory
 			.getLogger(EmployeeTester.class);
 
-	public EntityManagerFactory getEntityManagerFactory() {
+	public static EntityManagerFactory getEntityManagerFactory() {
 		return emFactory;
 	}
 
-	public void setEntityManagerFactory(EntityManagerFactory emFactory) {
-		this.emFactory = emFactory;
+	public static void setEntityManagerFactory(EntityManagerFactory emFactoryParam) {
+		emFactory = emFactoryParam;
 	}
 
-	public EntityManager getEntityManager() {
+	public static EntityManager getEntityManager() {
 		return em;
 	}
 
-	public void setEntityManager(EntityManager em) {
-		this.em = em;
+	public static void setEntityManager(EntityManager emparam) {
+		em = emparam;
 	}
 
-	private EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("entities");
-	private EntityManager em;
-	private  EntityTransaction mTrx;
+	private static EntityManagerFactory emFactory ;
+	private static EntityManager em;
 
-	public  EntityTransaction getTrx() {
-		return mTrx;
-	}
-
-	public void setTrx(EntityTransaction mTrx) {
-		this.mTrx = mTrx;
-	}
-
-	@Before
-	public void setUp() throws Exception {
-		try {
-			
+	
+	
+@BeforeClass	
+public static void setupTestClass() {	
 			logger.info("Building JPA EntityManager for unit tests. this is application managed em");
 			logger.info("what matters is the creation of the em.  not the emf");
+	setEntityManagerFactory( Persistence.createEntityManagerFactory("entities"));
 			setEntityManager(getEntityManagerFactory().createEntityManager());
 			
-			logger.info("Start a new transaction for the test");
-	        setTrx(getEntityManager().getTransaction());
-	        
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			fail("Exception during JPA EntityManager instanciation.");
-		}
+		
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		logger.info("Shuting down Hibernate JPA layer. closing the em is the responsibility of the app");
+	
+	
+	
+
+	@AfterClass
+	public static void tearDownTestClass() throws Exception {
+		logger.info("Shuting down Hibernate JPA layer. closing the em is the responsibility of the app any active txns will be rolled back");
+		
+		
 		if (em != null) {
 			em.close();
 		}
@@ -83,6 +80,7 @@ public class EmployeeTester {
 		}
 	}
 
+	
 	@Test
 	public void createEmployee() {
 
@@ -111,13 +109,16 @@ public class EmployeeTester {
 
 		int beforeCount = query.getResultList().size();
 
-		logger.info("Number of employees in the DB:" + beforeCount);
+		logger.info("in createEmployee test Number of employees in the DB:" + beforeCount);
 
-		getTrx().begin();
+		getEntityManager().getTransaction().begin();
 		 getEntityManager().persist(employee);
 		 //getId on employee will return correct value as it is set by the em.
 		 //but if we use merge instead of persist, getId will return null
-		getTrx().commit();
+		 //because merge returns a entity of same type that is managed by em and it contains the id.
+		 //persist acts on the same instance but merge copies the contents to a managed object and returns it
+		 
+		getEntityManager().getTransaction().commit();
 		
 		logger.info("employee id set on parking object : " + park1.getEmp().getId());
 
@@ -128,18 +129,32 @@ public class EmployeeTester {
 		for (Employee e : employeeList) {
 			logger.info("employee id " + e.getId() );
 			logger.info("employee 's parking lot " + e.getParking() );
+			//this returns true as em is still active.
+			logger.info("is it managed: " + getEntityManager().contains(e));
+			logger.info("is employee instance managed? " + getEntityManager().contains(employee));
+			logger.info("is parking lot instance managed? " + getEntityManager().contains(employee.getParking()));
+			getEntityManager().detach(e);
+			logger.info("is it managed now: " + getEntityManager().contains(e));
+			
+			logger.info("is employee instance managed? " + getEntityManager().contains(employee));
+			logger.info("is parking lot instance managed now ? " + getEntityManager().contains(employee.getParking()));
+			
 		}
 
 		int afterCount = employeeList.size();
 
-		logger.info("Number of students in the DB:" + afterCount);
+		logger.info("Number of employees in the DB:" + afterCount);
 		Assert.assertEquals(afterCount, beforeCount + 1);
 
 	}
 	
-	@Test(expected=PersistenceException.class)
+	@Test
 	public void createEmployeeWithParking() {
+		
+		EntityTransaction txn = getEntityManager().getTransaction();
 
+		try {
+		txn.begin();
 		Employee employee = new Employee();
 		employee.setLastName("Chintal");
 		employee.setJobTitle("Manager");
@@ -170,7 +185,6 @@ public class EmployeeTester {
 
 		logger.info("Number of students in the DB:" + beforeCount);
 
-		getTrx().begin();
 		
 	    getEntityManager().persist(park1);	
 	    
@@ -179,10 +193,15 @@ public class EmployeeTester {
 		
 		
 		 getEntityManager().persist(employee);
+		 
+		 logger.info("the id returned for employee is " + employee.getId()); 
+		 
+		 
 		 getEntityManager().persist(employee1);
 		 //getId on employee will return correct value as it is set by the em.
 		 //but if we use merge instead of persist, getId will return null
-		getTrx().commit();
+		 logger.info("the id returned for employee is " + employee1.getId()); 
+		txn.commit();
 
 		query = getEntityManager().createQuery(c);
 		
@@ -196,6 +215,11 @@ public class EmployeeTester {
 
 		logger.info("Number of employees in the DB:" + afterCount);
 		Assert.assertEquals(afterCount, beforeCount + 2);
+		
+		}
+		catch (Exception e) {
+			txn.rollback();
+		}
 
 	}
 

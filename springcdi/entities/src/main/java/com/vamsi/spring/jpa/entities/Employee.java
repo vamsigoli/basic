@@ -30,9 +30,10 @@ public class Employee {
 	private Integer id;
 	
 	
-	@OneToOne(optional=true, cascade=CascadeType.PERSIST )
+	@OneToOne(optional=true, cascade=CascadeType.ALL)
 	//by keeping optional as false, the Employee table that gets created will have PSPACE_ID as not null
 	//by keeping true, we can create employee without parking space
+	//by cascade option as ALL, even detach will evict
 	
 	@JoinColumn(name="PSPACE_ID"  ,unique=true)
 	private ParkingSpace parking;
@@ -51,6 +52,14 @@ public class Employee {
 	@Enumerated(EnumType.ORDINAL)
 	private EmployeeType employeeType;
 	
+	public EmployeeType getEmployeeType() {
+		return employeeType;
+	}
+
+	public void setEmployeeType(EmployeeType employeeType) {
+		this.employeeType = employeeType;
+	}
+
 	public ParkingSpace getParking() {
 		return parking;
 	}
