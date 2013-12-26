@@ -3,24 +3,29 @@ package com.vamsi.spring.jpa.entities;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
+
 public class Department {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name = "DEPT_ID_GENERATOR", 
+	sequenceName = "DEPT_SEQ" ,initialValue=10 ,allocationSize=1)
+@Id
+@GeneratedValue(generator = "DEPT_ID_GENERATOR")
     private int id;
     private String name;
     
-    @OneToMany(mappedBy="department")
+    @OneToMany(mappedBy="department" , cascade=CascadeType.ALL)
     private Collection<Employee> employees;
 
     public Department() {
-    	//see the implementation defined as ArrayList.
-    	//eclipse link initialized at declaration itself
+    	//the implementation defined as ArrayList.
+    	//eclipse link examples initialized the variable at declaration itself
         employees = new ArrayList<Employee>();
     }
     
@@ -28,7 +33,8 @@ public class Department {
         return id;
     }
     
-    private void setId(int id) {
+    @SuppressWarnings("unused")
+	private void setId(int id) {
         this.id = id;
     }
     

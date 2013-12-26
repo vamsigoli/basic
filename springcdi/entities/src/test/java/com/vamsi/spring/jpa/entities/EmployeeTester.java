@@ -9,21 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
-import javax.persistence.PersistenceUtil;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import static org.junit.Assert.*;
-
-import org.hibernate.jpa.internal.util.PersistenceUtilHelper;
-import org.hibernate.property.Getter;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -83,15 +75,128 @@ public static void setupTestClass() {
 	
 	@Test
 	public void createDepartment() {
+		EntityTransaction txn = getEntityManager().getTransaction();
+		EntityManager em = getEntityManager();
+		
+		logger.info("is txn active? " + txn.isActive());
+		
+		/*CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Department> c = qb.createQuery(Department.class);
+		Root<Department> deptRoot= c.from(Department.class);
+		c.select(deptRoot);
+
+		TypedQuery<Department> query = getEntityManager().createQuery(c);
+		
+
+		int beforeCount = query.getResultList().size();
+
+		logger.info("in createDepartment test Number of departments in the DB:" + beforeCount);*/
 		
 		Department dept = new Department();
-		dept.setName("Computer Science");
+		dept.setName("Economics");
+		
+		Project anewProj = new Project();
+		anewProj.setName("Commercial");
+		
+		
+		Employee employee = new Employee();
+		employee.setLastName("Goli");
+		employee.setJobTitle("Manager");
+		employee.setSalary(99000);
+		employee.setDateOfHire(Calendar.getInstance().getTime());
+		employee.setEmailAddress("a@b.com");
+		
+		ParkingSpace park1 = new ParkingSpace();
+		park1.setLocation("Near FirstGate");
+		park1.setLot(1);
+		
+		employee.setParking(park1);
+		park1.setEmp(employee);
+		dept.addEmployee(employee);
+		employee.addProject(anewProj);
+		
+		
+		txn.begin();
+		em.persist(dept);
+		em.flush();
+		logger.info("is txn active? " + txn.isActive());
+		txn.commit();
+		
+		//logger.info("department created as " + dept.getId());
+		//int after = query.getResultList().size();
 
+		//logger.info("in createDepartment test Number of departments in the DB:" + after);
+		
+		
+		
+		
+	}
+	
+	@Test
+	public void createDeptAndEmployee() {
+		
+		EntityTransaction txn = getEntityManager().getTransaction();
+		
+		logger.info("is txn active? " + txn.isActive());
+		
+		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Employee> c = qb.createQuery(Employee.class);
+		Root<Employee> employeeRoot = c.from(Employee.class);
+		c.select(employeeRoot);
+
+		TypedQuery<Employee> query = getEntityManager().createQuery(c);
+		
+
+		logger.info("is txn active? " + txn.isActive());
+		int beforeCount = query.getResultList().size();
+
+		logger.info("in createEmployee test Number of employees in the DB:" + beforeCount);
+
+		Department dept = new Department();
+		dept.setName("Computer Science");
+		
+		
+		Employee employee = new Employee();
+		employee.setLastName("Chintal");
+		employee.setJobTitle("Manager");
+		employee.setSalary(99000);
+		employee.setDateOfHire(Calendar.getInstance().getTime());
+		employee.setEmailAddress("a@b.com");
+		
+		ParkingSpace park1 = new ParkingSpace();
+		park1.setLocation("Near FirstGate");
+		park1.setLot(1);
+		
+		employee.setParking(park1);
+		park1.setEmp(employee);
+		//this assignment need to be explicitly managed
+		
+		dept.addEmployee(employee);
+		
+		getEntityManager().getTransaction().begin();
+		
 		getEntityManager().persist(dept);
 		
-		logger.info("department created as " + dept.getId());
+		getEntityManager().flush();
+		getEntityManager().getTransaction().commit();
+		logger.info("is txn active? " + txn.isActive());
+		
+		query = getEntityManager().createQuery(c);
+		
+		List<Employee> employeeList = query.getResultList(); 
+		
+		for (Employee e : employeeList) {
+			logger.info("employee id " + e.getId() );
+			logger.info("employee 's parking lot " + e.getParking() );
+			logger.info("employee 's department " + e.getDepartment() );
+			//this returns true as em is still active.
+			logger.info("is it managed: " + getEntityManager().contains(e));
+			logger.info("is employee instance managed? " + getEntityManager().contains(employee));
+			logger.info("is parking lot instance managed? " + getEntityManager().contains(employee.getParking()));
+		}
 		
 		
+		logger.info("is txn active? " + txn.isActive());
 		
 	}
 

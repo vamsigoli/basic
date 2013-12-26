@@ -1,5 +1,7 @@
 package com.vamsi.spring.jpa.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -11,8 +13,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -45,7 +47,12 @@ public class Employee {
 	@JoinColumn(name="DEPT_ID")
 	//its not unique. there will be many employees for a department. its a bidirectional relationship
 	//department is non owning side and will have @mappedBy 
+	//single object has ManyToOne annotation on it and in department, collection has OneToMany annotation.
 	private Department department;
+	
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+	private Collection<Project> projects = new ArrayList<Project>();
 	
 	private String lastName;
 	private String emailAddress;
@@ -58,6 +65,11 @@ public class Employee {
 	
 	@Enumerated(EnumType.ORDINAL)
 	private EmployeeType employeeType;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dateOfHire;
+	
+	private String jobTitle;
 	
 	public EmployeeType getEmployeeType() {
 		return employeeType;
@@ -75,9 +87,6 @@ public class Employee {
 		this.parking = parking;
 	}
 
-	
-	@Temporal(TemporalType.DATE)
-	private Date dateOfHire;
 	
 
 	public float getSalary() {
@@ -104,7 +113,6 @@ public class Employee {
 		this.jobTitle = jobTitle;
 	}
 
-	private String jobTitle;
 
 	public Integer getId() {
 		return id;
@@ -183,5 +191,22 @@ public class Employee {
 	public void setDepartment(Department department) {
 	 this.department = department;	
 	}
+
+	public Collection<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Collection<Project> projects) {
+		this.projects = projects;
+	}
+	
+	   public void addProject(Project project) {
+	        if (!getProjects().contains(project)) {
+	            getProjects().add(project);
+	        }
+	        if (!project.getEmployees().contains(this)) {
+	            project.getEmployees().add(this);
+	        }
+	    }
 
 }
