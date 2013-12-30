@@ -6,13 +6,16 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Project {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name = "PROJ_ID_GENERATOR", 
+	sequenceName = "PROJ_SEQ" ,initialValue=10 ,allocationSize=1)
+@Id
+@GeneratedValue(generator = "PROJ_ID_GENERATOR")
     protected int id;
     protected String name;
     @ManyToMany(mappedBy="projects", cascade=CascadeType.ALL)

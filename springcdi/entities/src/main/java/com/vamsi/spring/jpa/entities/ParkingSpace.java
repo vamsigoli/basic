@@ -1,14 +1,24 @@
 package com.vamsi.spring.jpa.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.vamsi.spring.jpa.types.ParkingLocation;
+
 @Entity
 @Table(name="PARKING_SPACE")
+@NamedQueries({
+	@NamedQuery(name="ParkingSpace.findAllavailableInLocation",
+			query="select p from ParkingSpace p where p.emp IS NULL and p.location = :location")
+})
 public class ParkingSpace {
 	@SequenceGenerator(name = "PARKING_ID_GENERATOR", 
 			sequenceName = "PARKING_SEQ" ,initialValue=10 ,allocationSize=1)
@@ -16,9 +26,12 @@ public class ParkingSpace {
 	@GeneratedValue(generator = "PARKING_ID_GENERATOR")
     private int id;
 	
-    private int lot;
     
-    private String location;
+	
+	private int lot;
+    
+	@Enumerated(EnumType.STRING)
+    private ParkingLocation location;
     
     @OneToOne(mappedBy="parking")
     private Employee emp;
@@ -50,12 +63,12 @@ public class ParkingSpace {
         this.lot = lot;
     }
     
-    public String getLocation() {
+    public ParkingLocation getLocation() {
         return location;
     }
     
-    public void setLocation(String deptName) {
-        this.location = deptName;
+    public void setLocation(ParkingLocation locParam) {
+        this.location = locParam;
     }
 
     public String toString() {

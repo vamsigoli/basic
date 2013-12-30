@@ -9,6 +9,8 @@ Want to create an employee using JPA?
 Want to update an existing employee using JPA?
 <form name="employee-details" action="${pageContext.request.contextPath}/employeecreate">
 <input name="employeeid" type="number" value="" />
+
+		<input id="submit" type="submit" />
 </form>
 
 </body>

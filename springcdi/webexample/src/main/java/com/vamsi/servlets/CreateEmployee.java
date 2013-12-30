@@ -70,7 +70,25 @@ public class CreateEmployee extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		doPost(request,response);
+		int employeeId;
+		
+	try {	
+		
+		
+		employeeId = Integer.parseInt(request.getParameter("employeeid"));
+
+		
+	}catch(Exception e) {
+		throw new ServletException("Please enter a valid identification number");
+	}
+		
+		
+		Employee employee = getEmployee(employeeId);
+			System.out.println("new employee created successfully with empid " + employee.getId());
+			
+			request.setAttribute("employee", employee);
+			
+			request.getRequestDispatcher("/create.jsp").forward(request, response);
 
 	}
 
@@ -130,5 +148,10 @@ public class CreateEmployee extends HttpServlet {
 		//em.persist(e);
 		
 		empNoSessionBean.saveEmployee(e);
+	}
+	
+	public Employee getEmployee(int employeeId) {
+		
+		return empNoSessionBean.findById(employeeId);
 	}
 }

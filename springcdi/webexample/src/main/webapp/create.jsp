@@ -15,10 +15,10 @@
 			<legend> 
 			<c:choose>
 					<c:when test="${not empty employee.id }">
-						Updating Book
+						Updating Employee 
 					</c:when>
 					<c:otherwise>
-						Adding Book
+						Adding Employee 
 					</c:otherwise>
 				</c:choose>
 			
@@ -55,6 +55,10 @@
 			
 			<c:if test="${not empty employee.id}">
 				<input type="hidden" name="id" value="${employee.id}" />
+			</c:if>
+			
+			<c:if test="${not empty employee.id}">
+			   <a href="${pageContext.request.contextPath}/addparking" >Add Parking </a>
 			</c:if>
 
 		</fieldset>

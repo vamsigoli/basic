@@ -1,1 +1,4 @@
 /target
+/derby.log
+/junit.log
+/junitrun.log

@@ -19,10 +19,12 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class EmployeeTester {
+import com.vamsi.spring.jpa.types.ParkingLocation;
+
+public class EmployeeTest {
 
 	public static final Logger logger = LoggerFactory
-			.getLogger(EmployeeTester.class);
+			.getLogger(EmployeeTest.class);
 
 	public static EntityManagerFactory getEntityManagerFactory() {
 		return emFactory;
@@ -100,6 +102,14 @@ public static void setupTestClass() {
 		
 		
 		Employee employee = new Employee();
+		
+		Address address = new Address();
+		
+		address.setStreet("Ashford Dunwoody Rd");
+		address.setCity("Atlanta");
+		address.setState("GA");
+		address.setZip("30338");
+		
 		employee.setLastName("Goli");
 		employee.setJobTitle("Manager");
 		employee.setSalary(99000);
@@ -107,10 +117,11 @@ public static void setupTestClass() {
 		employee.setEmailAddress("a@b.com");
 		
 		ParkingSpace park1 = new ParkingSpace();
-		park1.setLocation("Near FirstGate");
+		park1.setLocation(ParkingLocation.EAST_END);
 		park1.setLot(1);
 		
 		employee.setParking(park1);
+		employee.setAddress(address);
 		park1.setEmp(employee);
 		dept.addEmployee(employee);
 		employee.addProject(anewProj);
@@ -164,7 +175,7 @@ public static void setupTestClass() {
 		employee.setEmailAddress("a@b.com");
 		
 		ParkingSpace park1 = new ParkingSpace();
-		park1.setLocation("Near FirstGate");
+		park1.setLocation(ParkingLocation.EAST_END);
 		park1.setLot(1);
 		
 		employee.setParking(park1);
@@ -212,7 +223,7 @@ public static void setupTestClass() {
 		employee.setEmailAddress("a@b.com");
 		
 		ParkingSpace park1 = new ParkingSpace();
-		park1.setLocation("Near FirstGate");
+		park1.setLocation(ParkingLocation.EAST_END);
 		park1.setLot(1);
 		
 		employee.setParking(park1);
@@ -290,7 +301,7 @@ public static void setupTestClass() {
 		employee1.setEmailAddress("a@b1.com");
 		
 		ParkingSpace park1 = new ParkingSpace();
-		park1.setLocation("Near FirstGate");
+		park1.setLocation(ParkingLocation.EAST_END);
 		park1.setLot(1);
 
 		CriteriaBuilder qb = getEntityManager().getCriteriaBuilder();

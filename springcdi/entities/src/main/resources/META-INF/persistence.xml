@@ -10,6 +10,8 @@
 		<class>com.vamsi.spring.jpa.entities.Address</class>
 		<class>com.vamsi.spring.jpa.entities.Employee</class>
 		<class>com.vamsi.spring.jpa.entities.ParkingSpace</class>
+		<class>com.vamsi.spring.jpa.entities.Department</class>
+		<class>com.vamsi.spring.jpa.entities.Project</class>
 		
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 	</persistence-unit>

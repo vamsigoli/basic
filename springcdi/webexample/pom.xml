@@ -21,7 +21,7 @@
 	
 
 
-		<dependency>
+<!--  		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
@@ -39,7 +39,7 @@
 			<groupId>javax.ejb</groupId>
 			<artifactId>javax.ejb-api</artifactId>
 			<version>3.2</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
@@ -62,7 +62,7 @@
 			</exclusions>
 		</dependency>
 		
-			<dependency>
+<!--  			<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<version>1.0.0.Final</version>
@@ -73,7 +73,7 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>javax.transaction-api</artifactId>
 			<version>1.2</version>
-		</dependency>
+		</dependency> -->
 
 
 		<dependency>

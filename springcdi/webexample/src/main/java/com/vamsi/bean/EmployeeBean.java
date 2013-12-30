@@ -6,6 +6,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Status;
 import javax.transaction.TransactionSynchronizationRegistry;
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import com.vamsi.spring.jpa.entities.Employee;
 
@@ -29,6 +30,12 @@ public class EmployeeBean {
 		
 		//empBean.createEmployee(e);
 		em.persist(e);
+	}
+	
+	@Transactional(value=TxType.SUPPORTS)
+	public Employee findById(int employeeId) {
+		
+		return em.find(Employee.class, employeeId);
 	}
 
 }
