@@ -58,7 +58,7 @@
 			</c:if>
 			
 			<c:if test="${not empty employee.id}">
-			   <a href="${pageContext.request.contextPath}/addparking" >Add Parking </a>
+			   <a href="${pageContext.request.contextPath}/addparking.jsp" >Add Parking </a>
 			</c:if>
 
 		</fieldset>

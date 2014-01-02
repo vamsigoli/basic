@@ -19,7 +19,11 @@ import javax.transaction.Transactional;
 import com.vamsi.bean.EmployeeBean;
 import com.vamsi.spring.jpa.entities.Employee;
 import com.vamsi.stateless.EmployeeSessionBean;
+
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Servlet implementation class CreateEmploeeServlet
  */
@@ -28,6 +32,8 @@ public class CreateEmployee extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+	
+	private static Logger logger = LoggerFactory.getLogger(CreateEmployee.class);
 	
 	 @Resource
 	    TransactionSynchronizationRegistry tsr;
@@ -84,7 +90,7 @@ public class CreateEmployee extends HttpServlet {
 		
 		
 		Employee employee = getEmployee(employeeId);
-			System.out.println("new employee created successfully with empid " + employee.getId());
+			logger.info("employee retrieved successfully with empid " + employee.getId());
 			
 			request.setAttribute("employee", employee);
 			
@@ -117,7 +123,7 @@ public class CreateEmployee extends HttpServlet {
 			employee.setSalary(Float.valueOf(salary));
 			saveEmployee(employee);
 			
-			System.out.println("new employee created successfully with empid " + employee.getId());
+			logger.info("new employee created successfully with empid " + employee.getId());
 			
 			request.setAttribute("employee", employee);
 			
@@ -127,6 +133,7 @@ public class CreateEmployee extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new ServletException("Exception in creating employee ", e);
 
 		}
 		
