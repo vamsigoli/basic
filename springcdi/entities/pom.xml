@@ -23,7 +23,7 @@
 		<dependency> <groupId>org.hibernate</groupId> 
 			<artifactId>hibernate-entitymanager</artifactId> 
 			<version>${project.hibernate.version}</version> 
-			<scope>test</scope>
+			<!--  hibernate 4.3 is for jpa 2.1 <scope>test</scope> -->
 			</dependency> 
 
 		<dependency>

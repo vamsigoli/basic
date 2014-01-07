@@ -56,9 +56,9 @@
 
 				<tr>
 
-					<td><label for="parking">Parking slot</label></td>
-					<td><select name="parkingspace">
-							<option value="--Select--" selected>--Select--</option>
+					<td><label for="parkingspace">Parking slot</label></td>
+					<td><select name="parkingspace" id="parkingspace">
+							  <option value="--Select--" selected>--Select--</option>
 					</select></td>
 				</tr>
 			</table>
@@ -76,9 +76,9 @@
 					var valueSelected = optionSelected.val();
 					//var textSelected   = optionSelected.text();
 
-					var reqOption = JSON.stringify({
-						"reqOption" : valueSelected
-					});
+					//var reqOption = JSON.stringify({
+					//	"reqOption" : valueSelected
+					//});
 
 					//$.getJSON('getavailablelocations', reqOption, function(data) {
 					//the above line doesnot work in jquery. jquery updates the url with the data
@@ -87,18 +87,32 @@
 					//append it to the url as 'getavailableoptions?parameters=" + stringified json
 					// and read in the server as request.getParameter("parameters")
 					//then parse the json string
+// 					$.getJSON('getavailablelocations', {reqOption : valueSelected}, function(data,success,xhr) {
+// 						var parkingspace = $("#parkingspace");
+// 						//var dataParsed = $.parseJSON(data);
+// 						//alert(dataParsed);
+// 						alert(data.locations);
+// 						$.each(data.locations, function() {
+// 							parkingspace.append($("<option />").val(this.id)
+// 									.text(this.lot));
+// 						});
+
+// 					});
+
+					
+// 							$("#parkingspace").append("<option value=123>1</option>");
 					$.getJSON('getavailablelocations', {reqOption : valueSelected}, function(data) {
-						var parkingspace = $("#parkingspace");
-						alert(data);
-						var dataParsed = $.parseJSON(data);
-						$.each(dataParsed, function() {
-							parkingspace.append($("<option />").val(this.id)
-									.text(this.lot));
-						});
-
+						//alert(data);
+						//alert(data.locations[0].id);
+ 							$("#parkingspace").empty().append($("<option />").val("--Select--").text("--Select--"));
+						$.each(data.locations,function() {
+							//alert(this.id);
+							//alert(this.lotnumber);
+ 							$("#parkingspace").append($("<option />").val(this.id).text(this.lotnumber));
+ 							//$("#parkingspace").append("<option value= " + this.id + ">" + this.lotnumber + "</option>");
+							});
 					});
-
-				});
+					});
 	</script>
 
 </body>
