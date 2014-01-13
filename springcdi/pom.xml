@@ -10,7 +10,7 @@
 		<module>core</module>
 		<module>entities</module>
 		
-		<module>spring-mvc</module>
+
 		<module>springmvc</module>
 		<module>corejava</module>
 	</modules>
