@@ -5,7 +5,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
 	<persistence-unit name="entities" transaction-type="JTA">
-		<!--  hibernate is not yet ready for glassfish 4<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+	  <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider> 
 		<jta-data-source>jdbc/empDS</jta-data-source>
 		<class>com.vamsi.spring.jpa.entities.Address</class>
 		<class>com.vamsi.spring.jpa.entities.Employee</class>
@@ -14,5 +14,14 @@
 		<class>com.vamsi.spring.jpa.entities.Project</class>
 		
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+		<property name="eclipselink.query-results-cache" value="false"/>
+		<property name="eclipselink.logging.logger"
+     value="org.eclipse.persistence.logging.DefaultSessionLog"/>
+     <property name="eclipselink.logging.level" value="FINE" />
+     <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+     <property name = "hibernate.show_sql" value = "true" />
+     <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+     </properties>
 	</persistence-unit>
 </persistence>

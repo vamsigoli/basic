@@ -354,5 +354,27 @@ public static void setupTestClass() {
 
 	}
 
-
+   @Test
+   public void testNamedQueryOnParking() {
+	   
+	   EntityTransaction tx = em.getTransaction();
+	   
+	   tx.begin();
+	   
+	   ParkingSpace p = new ParkingSpace();
+	   p.setLocation(ParkingLocation.EAST_END);
+	   p.setLot(1);
+	   em.persist(p);
+	   tx.commit();
+	   
+	 ParkingLocation pl = ParkingLocation.EAST_END;
+	   
+	TypedQuery<ParkingSpace> query = em.createNamedQuery(
+										"ParkingSpace.findAllavailableInLocation", ParkingSpace.class)
+										.setParameter("location", pl);
+	
+	List<ParkingSpace> psList = query.getResultList();	
+	
+	logger.info("number of parking spaces in " + pl + "is " + psList.size());
+   }
 }

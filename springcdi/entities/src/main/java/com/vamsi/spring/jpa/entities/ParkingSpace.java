@@ -17,7 +17,10 @@ import com.vamsi.spring.jpa.types.ParkingLocation;
 @Table(name="PARKING_SPACE")
 @NamedQueries({
 	@NamedQuery(name="ParkingSpace.findAllavailableInLocation",
-			query="select p from ParkingSpace p where p.emp IS NULL and p.location = :location")
+//			query="select p from ParkingSpace p where p.emp IS NULL and p.location = :location")
+			//this didn't geneate the query i wanted. updated to below
+			
+query="select p from ParkingSpace p where p.id NOT IN (select e.parking.id from Employee e where e.parking IS NOT NULL ) and p.location = :location")	
 })
 public class ParkingSpace {
 	@SequenceGenerator(name = "PARKING_ID_GENERATOR", 
@@ -27,15 +30,15 @@ public class ParkingSpace {
     private int id;
 	
     
+    @OneToOne(mappedBy="parking")
+    private Employee emp;
+    //even though we have set the relationship, the emp variable need to be explicitly set by code
 	
 	private int lot;
     
 	@Enumerated(EnumType.STRING)
     private ParkingLocation location;
     
-    @OneToOne(mappedBy="parking")
-    private Employee emp;
-    //even though we have set the relationship, the emp variable need to be explicitly set by code
 
     public Employee getEmp() {
 		return emp;
