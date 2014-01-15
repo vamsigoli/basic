@@ -47,14 +47,19 @@ public class Employee {
 	@ManyToOne
 	@JoinColumn(name="DEPT_ID")
 	//its not unique. there will be many employees for a department. its a bidirectional relationship
-	//department is non owning side and will have @mappedBy 
+	//department is non owning side and will have @mappedBy("department") the name of attribute 
 	//single object has ManyToOne annotation on it and in department, collection has OneToMany annotation.
 	private Department department;
 	
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	private Collection<Project> projects = new ArrayList<Project>();
-	
+	//here we are defaulting to the JPA provided join table, EMPLOYEE_PROJECT. if we want to
+	//specify our own, we need to give @JoinTable. The column in the EMPLOYEE_PROJECT for 
+	//projects attribute will be projects_id and as in Project entity employees is used
+	//to indicate the list of employees, that column would be employees_id
+	//to have our own behaviour, we need to have @JoinTable with @JoinColumn attributes
+	 
 	private String lastName;
 	private String emailAddress;
 	private float salary;
