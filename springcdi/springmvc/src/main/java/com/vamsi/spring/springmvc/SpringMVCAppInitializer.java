@@ -32,7 +32,8 @@ public class SpringMVCAppInitializer implements WebApplicationInitializer {
 	private WebApplicationContext createContext(final Class<?>... annotatedClasses) {
 		AnnotationConfigWebApplicationContext context;
 		context = new AnnotationConfigWebApplicationContext();
-		context.scan("com.vamsi.spring.springmvc");		
+		//context.scan("com.vamsi.spring.springmvc");		
+		context.register(DispatcherServletConfig.class);
 		return context;
 	}
 
