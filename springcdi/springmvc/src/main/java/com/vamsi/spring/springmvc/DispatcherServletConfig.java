@@ -8,6 +8,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
+//this registers all the default handlermappings and handleradapters to the context
+
 @ComponentScan("com.vamsi.spring.springmvc")
 public class DispatcherServletConfig {
 	@Bean
@@ -17,4 +19,6 @@ public class DispatcherServletConfig {
 		result.setSuffix(".jsp");
 		return result;
 	}
+	
+	
 }
