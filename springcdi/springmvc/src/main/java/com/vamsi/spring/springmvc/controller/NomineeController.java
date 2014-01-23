@@ -34,6 +34,6 @@ public final class NomineeController {
 	public String processFormData(Member member) {
 		log.info("Processing nominee: " + member);
 		log.info("the view name is " + thanksViewName);
-		return thanksViewName;
+		return "redirect:"+thanksViewName;
 	}
 }
