@@ -6,15 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.vamsi.spring.springmvc.controller.NomineeController;
 
 @Configuration
 @EnableWebMvc
@@ -34,6 +30,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 	 * @Bean public NomineeController nomineeController() { NomineeController
 	 * nominee = new NomineeController(); nominee.setThanksViewName("thanks");
 	 * return nominee; }
+	 * the above code didnot work. the controller did not get the view name injected properly
+	 * the bean returned by this configuration is not used when request is received
 	 */
 
 	@Bean
@@ -59,6 +57,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
 		registry.addViewController("/users/registration_ok").setViewName(
 				"users/registrationOk");
+		registry.addViewController("/nominee/thanks").setViewName(
+				"nominee/thanks");
 
 		super.addViewControllers(registry);
 	}

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vamsi.spring.beans.Member;
 
@@ -31,8 +32,11 @@ public final class NomineeController {
 	}
 
 	@RequestMapping(value="/new",method = RequestMethod.POST)
-	public String processFormData(Member member) {
+	public String processFormData(Member member, RedirectAttributes redirectAttr) {
 		log.info("Processing nominee: " + member);
+		
+		redirectAttr.addFlashAttribute(member);
+		
 		log.info("the view name is " + thanksViewName);
 		return "redirect:"+thanksViewName;
 	}

@@ -10,7 +10,9 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class SpringMVCAppInitializer implements WebApplicationInitializer {
-
+//or we could have extended the AbstractDispatcherServletInitializer and override 
+	//the specific methods needed
+	
 	@Override
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
