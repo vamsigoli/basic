@@ -29,6 +29,18 @@ public class SpringJavaConfig {
 				"hollywoodServiceJSR330", HollywoodServiceJSR330.class);
 
 		hollywoodservice.getFriendlyAgents();
+		
+		
+		
+		Box<Integer> abox = ctx.getBean("intBox", Box.class);
+		
+		abox.setA(100);
+		
+		System.out.println("first bean " + abox.getA());
+		
+		Box<Integer> bbox = ctx.getBean("intBox", Box.class);
+		
+		System.out.println("second bean " + abox.getA());
 
 		ctx.close();
 
