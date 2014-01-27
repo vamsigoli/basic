@@ -1,6 +1,8 @@
 package com.vamsi.spring.springmvc;
 
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.vamsi.spring.beans.Account;
 
 @Configuration
 @EnableWebMvc
@@ -61,6 +64,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 				"nominee/thanks");
 
 		super.addViewControllers(registry);
+	}
+	
+	@Bean
+	public Account account() {
+		return new Account();
 	}
 
 }

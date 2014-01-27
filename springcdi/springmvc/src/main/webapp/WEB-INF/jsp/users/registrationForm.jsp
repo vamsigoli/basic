@@ -4,7 +4,7 @@
 <title>New User Registration</title>
 </head>
 <body>
-	<form:form action="." modelAttribute="account">
+	<form:form action="." modelAttribute="accountFormValidation">
 		<h1>New User Registration</h1>
 		<div>
 			Username:

@@ -1,12 +1,16 @@
 package com.vamsi.spring.forms;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.ScriptAssert;
 
+
+@ScriptAssert(message="account.password.mismatch.message",lang="java", script="_this.getPassword().equals(_this.getConfirmPassword());")
 public class AccountFormValidation {
 	private String username, password, confirmPassword, firstName, lastName,
 			email;
@@ -87,6 +91,8 @@ public class AccountFormValidation {
 		this.marketingOk = marketingOk;
 	}
 
+	
+	@AssertTrue(message = "{account.acceptTerms.assertTrue.message}")
 	public boolean isAcceptTerms() {
 		return acceptTerms;
 	}
