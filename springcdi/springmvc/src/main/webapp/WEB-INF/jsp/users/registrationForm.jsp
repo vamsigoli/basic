@@ -1,15 +1,31 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
 <title>New User Registration</title>
 </head>
 <body>
 	<form:form action="." modelAttribute="accountFormValidation">
+
+		<form:errors path="*">
+			<div>
+				<spring:message code="error.global" />
+			</div>
+		</form:errors>
+
+
 		<h1>New User Registration</h1>
 		<div>
 			Username:
 			<form:input path="username" />
 		</div>
+
+			<div>
+				<form:errors path="username" htmlEscape="false" />
+			</div>
+
+
+
 		<div>
 			Password:
 			<form:password path="password" />
@@ -18,6 +34,13 @@
 			Confirm password:
 			<form:password path="confirmPassword" />
 		</div>
+		
+		<div>
+				<form:errors path="password" htmlEscape="false" />
+			</div>
+		
+		
+		
 		<div>
 			E-mail address:
 			<form:input path="email" />

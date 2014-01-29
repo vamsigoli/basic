@@ -23,7 +23,7 @@ import com.vamsi.spring.springmvc.service.AccountService;
 @RequestMapping("/registerusers")
 public class AccountValidationController {
 	private static final Logger log = LoggerFactory
-			.getLogger(AccountController.class);
+			.getLogger(AccountValidationController.class);
 
 	private static final String VN_REG_FORM = "users/registrationForm";
 	private static final String VN_REG_OK = "redirect:registration_ok";
@@ -67,20 +67,44 @@ public class AccountValidationController {
 		account.setLastName(form.getLastName());
 		account.setEmail(form.getEmail());
 		account.setMarketingOk(form.isMarketingOk());
-		account.setAcceptTerms(form.isAcceptTerms());
+		account.setAcceptTerms(form.getAcceptTerms());
 		account.setEnabled(true);
+		
+		
+		log.info("converted to entity: {}",account);
+		
 		return account;
 		}
 
 	private static void convertPasswordError(BindingResult result) {
+		
+		log.info("recieved call to convert");
+		
+		
 		for (ObjectError error : result.getGlobalErrors()) {
 			String msg = error.getDefaultMessage();
+			
+			log.info("error received is :" + msg);
 			if ("account.password.mismatch.message".equals(msg)) {
 				if (!result.hasFieldErrors("password")) {
 					result.rejectValue("password", "error.mismatch");
+		log.info("converted password error");
 				}
 			}
 		}
+		for (ObjectError error : result.getFieldErrors()) {
+			String msg = error.getDefaultMessage();
+			
+			log.info("field error received is :" + msg);
+			if ("account.password.mismatch.message".equals(msg)) {
+				if (!result.hasFieldErrors("password")) {
+					result.rejectValue("password", "error.mismatch");
+		log.info("converted password error");
+				}
+			}
+		}
+		
+		
 	}
 
 }

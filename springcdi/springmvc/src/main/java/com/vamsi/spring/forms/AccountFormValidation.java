@@ -10,7 +10,10 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.ScriptAssert;
 
 
-@ScriptAssert(message="account.password.mismatch.message",lang="java", script="_this.getPassword().equals(_this.getConfirmPassword());")
+//instead of using scriptassert having java script and loosing out the strong typing,
+//for crossfield validations use a @AssertTrue validation over a boolean returning method like isValidPassword below
+//also @ScriptAssert is a global error while @AssertTrue below is a field error
+//@ScriptAssert(message="account.password.mismatch.message",lang="javascript", script="_this.password.equals(_this.confirmPassword)")
 public class AccountFormValidation {
 	private String username, password, confirmPassword, firstName, lastName,
 			email;
@@ -54,6 +57,11 @@ public class AccountFormValidation {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
+	
+	@AssertTrue(message="account.password.mismatch.message")
+	private boolean getValidPassword() {
+		return this.password.equals(this.confirmPassword);
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -93,7 +101,7 @@ public class AccountFormValidation {
 
 	
 	@AssertTrue(message = "{account.acceptTerms.assertTrue.message}")
-	public boolean isAcceptTerms() {
+	public boolean getAcceptTerms() {
 		return acceptTerms;
 	}
 
