@@ -1,5 +1,7 @@
 package com.vamsi.core;
 
+import java.util.HashMap;
+
 public class ThreadStateTester implements Runnable {
 
 	private java.lang.Thread self;
@@ -36,6 +38,13 @@ public class ThreadStateTester implements Runnable {
 		
 		System.out.println("first thread state after sleep is " + first.getState());
 		System.out.println("second thread state after sleep is " + second.getState());
+		
+		
+		HashMap<String,String> ahm = new HashMap<String,String>();
+		
+		ahm.put(null, "abc");
+		
+		System.out.println(ahm.get(null));
 		
 
 	}

@@ -75,6 +75,19 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 		return new Account();
 	}
 	
+	
+	@Bean(name="accounts")
+	public Set<Account> accounts() {
+		Set<Account> accountSet = new HashSet<Account>();
+		Account a = new Account();
+		a.setLastName("initial");
+		accountSet.add(a);
+		
+		return accountSet;
+		
+		
+	}
+	
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
