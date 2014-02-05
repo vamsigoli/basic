@@ -10,12 +10,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.vamsi.spring.beans.Account;
+import com.vamsi.spring.springmvc.service.AccountService;
+import com.vamsi.spring.springmvc.service.AccountServiceImpl;
 
 @Configuration
 @EnableWebMvc
@@ -75,19 +78,27 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 		return new Account();
 	}
 	
+//this did not work. though the bean definition after adding name didnot give error that atleast one bean need to be defined, 
+//this account set is not injected. we got a null pointer when we tried to add in the service method
+//the only option left was the above where we will get the set of accounts
+//when we are expecting an autowiring of set of accounts, spring is thinking that we need all the account beans that are 
+//configured in the application. not a dependency injection of an empty collection. 
+//if we want a bean to be configured with an empty collection, we need to have it configured. for example, we need
+//to configure the accountserviceimpl as a bean rather than autowire the collection	
+//and to do that, use @Bean instead of @Service in the configuration file	
+//	@Bean(name="accounts")
+//	public Set<Account> accounts() {
+//		Set<Account> accountSet = new HashSet<Account>();
+//		Account a = new Account();
+//		a.setLastName("initial");
+//		accountSet.add(a);
+//		
+//		return accountSet;
+//		
+//		
+//	}
 	
-	@Bean(name="accounts")
-	public Set<Account> accounts() {
-		Set<Account> accountSet = new HashSet<Account>();
-		Account a = new Account();
-		a.setLastName("initial");
-		accountSet.add(a);
-		
-		return accountSet;
-		
-		
-	}
-	
+
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

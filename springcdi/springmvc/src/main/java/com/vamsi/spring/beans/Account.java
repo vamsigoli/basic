@@ -2,6 +2,9 @@ package com.vamsi.spring.beans;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Account {
 	
 	private String username, firstName, lastName, email;
@@ -56,6 +59,14 @@ public class Account {
 	}
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+	
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("username", username).append("firstName", firstName)
+				.append("lastName", lastName).append("email", email)
+				.append("marketingOk", marketingOk)
+				.append("acceptTerms", acceptTerms).toString();
 	}
 
 }
