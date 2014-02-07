@@ -83,5 +83,9 @@ public class JpaDao<K, T> implements Dao<K, T> {
 		}
 		return query.getResultList();
 	}
+	
+	protected EntityManager getEM() {
+		return this.em;
+	}
 
 }

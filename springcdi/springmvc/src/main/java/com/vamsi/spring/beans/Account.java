@@ -2,11 +2,34 @@ package com.vamsi.spring.beans;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+
+@NamedQuery(
+name = "findAccountByUsername",
+query = "from Account where username = :username")
+
 
 public class Account {
 	
+	
+	
+	@SequenceGenerator(name = "ACCOUNT_ID_GENERATOR", 
+			sequenceName = "ACC_SEQ" ,initialValue=10 ,allocationSize=1)
+	@Id
+	@GeneratedValue(generator = "ACCOUNT_ID_GENERATOR")
+	Long id;
+	
+	
+	public Long getId() {
+		return id;
+	}
+@SuppressWarnings("unused")
+	private void setId(Long id) {
+		this.id = id;
+	}
 	private String username, firstName, lastName, email;
 	private boolean marketingOk = true;
 	private boolean acceptTerms = false;
@@ -59,14 +82,6 @@ public class Account {
 	}
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
-	}
-	
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("username", username).append("firstName", firstName)
-				.append("lastName", lastName).append("email", email)
-				.append("marketingOk", marketingOk)
-				.append("acceptTerms", acceptTerms).toString();
 	}
 
 }
