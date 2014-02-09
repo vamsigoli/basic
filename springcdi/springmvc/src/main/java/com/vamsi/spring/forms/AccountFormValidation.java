@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.ScriptAssert;
+//import org.hibernate.validator.constraints.ScriptAssert;
 
 
 //instead of using scriptassert having java script and loosing out the strong typing,

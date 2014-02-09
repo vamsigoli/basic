@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 public class JpaDao<K, T> implements Dao<K, T> {
@@ -68,14 +67,11 @@ public class JpaDao<K, T> implements Dao<K, T> {
 				.setMaxResults(resultLimit).getResultList();
 	}
 
-	public Collection<T> findByNativeQuery(String sql, Class<T> type) {
-		return this.em.createNativeQuery(sql, type).getResultList();
-	}
 
 	public Collection<T> findByNamedQuery(String namedQueryName,
 			Map<String, Object> parameters, int resultLimit) {
 		Set<Entry<String, Object>> rawParameters = parameters.entrySet();
-		Query query = this.em.createNamedQuery(namedQueryName);
+		TypedQuery<T> query = this.em.createNamedQuery(namedQueryName, entityClass);
 		if (resultLimit > 0)
 			query.setMaxResults(resultLimit);
 		for (Entry<String, Object> entry : rawParameters) {

@@ -1,8 +1,6 @@
 package com.vamsi.spring.springmvc;
 
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -10,15 +8,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.vamsi.spring.beans.Account;
-import com.vamsi.spring.springmvc.service.AccountService;
-import com.vamsi.spring.springmvc.service.AccountServiceImpl;
 
 @Configuration
 @EnableWebMvc

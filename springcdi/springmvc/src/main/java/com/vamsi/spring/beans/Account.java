@@ -2,6 +2,8 @@ package com.vamsi.spring.beans;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
@@ -11,7 +13,7 @@ import javax.persistence.SequenceGenerator;
 name = "findAccountByUsername",
 query = "from Account where username = :username")
 
-
+@Entity
 public class Account {
 	
 	
@@ -30,10 +32,21 @@ public class Account {
 	private void setId(Long id) {
 		this.id = id;
 	}
-	private String username, firstName, lastName, email;
+
+	private String username;
+	
+	@Column( name="first_name")
+	private String firstName;
+	
+	@Column(name="last_name")
+	private String lastName;
+	String email;
+	@Column(name="marketing_ok")
 	private boolean marketingOk = true;
+	@Column(name="accept_terms")
 	private boolean acceptTerms = false;
 	private boolean enabled = true;
+	@Column(name="date_created")
 	private Date dateCreated;
 	public String getUsername() {
 		return username;
