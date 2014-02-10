@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.vamsi.spring.springmvc.dao.AccountDao;
 import com.vamsi.spring.springmvc.dao.AccountDaoImpl;
@@ -24,6 +26,7 @@ public class EmbeddedDbConfig {
 		.setType(EmbeddedDatabaseType.H2)
 		.addScript("classpath:setmode.sql")
 		.addScript("classpath:createaccount.sql")
+		.addScript("classpath:defaultdata.sql")
 		.build();
 	}
 	
@@ -55,5 +58,16 @@ public class EmbeddedDbConfig {
 	public AccountDao accountDaoImpl() {
 		return new AccountDaoImpl();
 	}
+	
+	@Bean
+	   public PlatformTransactionManager transactionManager(){
+	      JpaTransactionManager transactionManager = new JpaTransactionManager();
+	      transactionManager.setEntityManagerFactory(
+	       this.entityManagerFactoryBean().getObject() );
+	      
+	      return transactionManager;
+	   }
+	
+	
 
 }

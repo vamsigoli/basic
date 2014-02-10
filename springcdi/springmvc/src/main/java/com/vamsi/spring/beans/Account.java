@@ -3,11 +3,15 @@ package com.vamsi.spring.beans;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @NamedQuery(
 name = "findAccountByUsername",
@@ -42,12 +46,19 @@ public class Account {
 	private String lastName;
 	String email;
 	@Column(name="marketing_ok")
+	@Convert(converter=BooleanYNConverter.class)
 	private boolean marketingOk = true;
+	
 	@Column(name="accept_terms")
+	@Convert(converter=BooleanYNConverter.class)
 	private boolean acceptTerms = false;
+	
+	@Convert(converter=BooleanYNConverter.class)
 	private boolean enabled = true;
+	
 	@Column(name="date_created")
 	private Date dateCreated;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -95,6 +106,15 @@ public class Account {
 	}
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+	
+	
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("username", username).append("firstName", firstName)
+				.append("lastName", lastName).append("email", email)
+				.append("marketingOk", marketingOk)
+				.append("acceptTerms", acceptTerms).toString();
 	}
 
 }
