@@ -9,11 +9,16 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-public class SpringMVCAppInitializer implements WebApplicationInitializer {
+public class SpringMVCAppInitializer 
+//implements WebApplicationInitializer 
+//better use the AbstractDispatcherServletInitializer. commented so that it is not initialized
+//created webappinitializer
+{
 //or we could have extended the AbstractDispatcherServletInitializer and override 
 	//the specific methods needed
+	//read your dropbox notes for onStartup method
 	
-	@Override
+	//@Override
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
 		registerDispatcherServlet(servletContext);

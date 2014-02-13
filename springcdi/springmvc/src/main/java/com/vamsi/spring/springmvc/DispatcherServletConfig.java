@@ -11,6 +11,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.vamsi.spring.beans.Account;
@@ -100,5 +101,22 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 		messageSource.setBasename("classpath:messages");
 		return messageSource;
 	}
+	
+	
+	//This is not working for 404. may be web.xml path need to be
+	//taken for this.
+	
+	@Bean(name="simpleMappingExceptionResolver")
+    public SimpleMappingExceptionResolver createSimpleMappingExceptionResolver() {
+        SimpleMappingExceptionResolver r =
+              new SimpleMappingExceptionResolver();
+        
+        r.setDefaultErrorView("error/404");
+
+        r.addStatusCode("error/404", org.springframework.http.HttpStatus.NOT_FOUND.value());
+        return r;
+    }
+	
+	
 
 }

@@ -2,6 +2,8 @@ package com.vamsi.test.springmvc;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +22,8 @@ import com.vamsi.spring.springmvc.dao.AccountDaoImpl;
 @Configuration
 public class EmbeddedDbConfig {
 	
+	Logger logger = LoggerFactory.getLogger(EmbeddedDbConfig.class);
+	
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder()
@@ -37,12 +41,23 @@ public class EmbeddedDbConfig {
 	      factoryBean.setDataSource( dataSource());
 	      factoryBean.setPersistenceUnitName("entities-test");
 	      
+	      //this statement below is really helping the transaction management.
+	      //if we dont add this vendor adaptor, h2 is trying to get the lock on
+	      //account table for the update statement and it is unable to get 
+	      //i believe hibernate is managing the transaction internally and 
+	      //allowing h2 to be successful in updating the database as well
+	      
 	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter(){
 	         {
 	            // JPA properties ...
 	         }
 	      };
 	      factoryBean.setJpaVendorAdapter( vendorAdapter );
+	      
+//	      JpaVendorAdapter a = factoryBean.getJpaVendorAdapter();
+	      
+	      
+//	      logger.debug("jpa adaptor got is " + a.getClass().getSimpleName());
 
 	      return factoryBean;
 	   }
