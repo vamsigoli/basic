@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.vamsi.spring.beans.Account;
+//import com.vamsi.spring.beans.Account;
 
 @Configuration
 @EnableWebMvc
@@ -69,11 +69,13 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 		super.addViewControllers(registry);
 	}
 	
-	@Bean
-	public Account account() {
-		return new Account();
-	}
+//not required now. earlier we were testing with in memory account object	
 	
+//	@Bean
+//	public Account account() {
+//		return new Account();
+//	}
+//	
 //this did not work. though the bean definition after adding name didnot give error that atleast one bean need to be defined, 
 //this account set is not injected. we got a null pointer when we tried to add in the service method
 //the only option left was the above where we will get the set of accounts
