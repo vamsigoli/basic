@@ -36,17 +36,22 @@ public class AccountDaoTest {
 
 	}
 
-	@Test(expected = NoResultException.class)
+	//@Test(expected = NoResultException.class)
+	//changed implementation. swalling exception to return null in the findByUsername
+	@Test
 	public void testFindByUserName() {
 		Account account = myDAO.findByUsername("junk");
-		assertNotNull(account);
+		assertNull(account);
 	}
-	@Test(expected = NoResultException.class)
+	//@Test(expected = NoResultException.class)
+	//changed implementation. swalling exception to return null in the findByUsername
+	@Test
 	public void testNullFindByUserName() {
 		Account account = myDAO.findByUsername(null);
-		assertNotNull(account);
+		assertNull(account);
 	}
 	@Test
+	//default data as part of the creation of the db
 	public void testDefaultFindByUserName() {
 		Account account = myDAO.findByUsername("vam123");
 		assertNotNull(account);
