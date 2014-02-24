@@ -113,7 +113,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         SimpleMappingExceptionResolver r =
               new SimpleMappingExceptionResolver();
         
-        r.setDefaultErrorView("error/404");
+        r.setDefaultErrorView("error/500");
 
         r.addStatusCode("error/404", org.springframework.http.HttpStatus.NOT_FOUND.value());
         return r;
