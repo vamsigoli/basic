@@ -61,15 +61,22 @@ public class AccountValidationController {
 	}
 	
 	private static Account toAccount(AccountFormValidation form) {
-		Account account = new Account();
-		account.setUsername(form.getUsername());
-		account.setFirstName(form.getFirstName());
-		account.setLastName(form.getLastName());
-		account.setEmail(form.getEmail());
-		account.setMarketingOk(form.isMarketingOk());
-		account.setAcceptTerms(form.getAcceptTerms());
-		account.setEnabled(true);
+//		Account account = new Account();
+//		account.setUsername(form.getUsername());
+//		account.setFirstName(form.getFirstName());
+//		account.setLastName(form.getLastName());
+//		account.setEmail(form.getEmail());
+//		account.setMarketingOk(form.isMarketingOk());
+//		account.setAcceptTerms(form.getAcceptTerms());
+//		account.setEnabled(true);
+//		converted to builder pattern as below
+//		the build method does constraint validations and throws a constraint violation
+//		exception as done by @Valid annotation of spring mvc
 		
+		Account account = new Account.Builder(form.getLastName()).firstName(form.getFirstName())
+								.userName(form.getUsername()).email(form.getEmail())
+								.marketingOk(form.isMarketingOk()).acceptTerms(form.getAcceptTerms())
+								.enabled(true).build();
 		
 		log.info("converted to entity: {}",account);
 		

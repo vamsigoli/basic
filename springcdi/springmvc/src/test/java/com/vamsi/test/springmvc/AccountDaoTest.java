@@ -2,8 +2,6 @@ package com.vamsi.test.springmvc;
 
 import static org.junit.Assert.*;
 
-import javax.persistence.NoResultException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -67,14 +65,17 @@ public class AccountDaoTest {
 	}
 	@Test
 	public void testSuccessfulCreate() {
-		Account freshAccount = new Account();
-		freshAccount.setFirstName("geetha");
-		freshAccount.setLastName("ch");
-		freshAccount.setUsername("gee123");
-		freshAccount.setEmail("gee@g.com");
-		freshAccount.setAcceptTerms(true);
-		freshAccount.setEnabled(true);
-		freshAccount.setMarketingOk(true);
+//		Account freshAccount = new Account();
+//		freshAccount.setFirstName("geetha");
+//		freshAccount.setLastName("ch");
+//		freshAccount.setUsername("gee123");
+//		freshAccount.setEmail("gee@g.com");
+//		freshAccount.setAcceptTerms(true);
+//		freshAccount.setEnabled(true);
+//		freshAccount.setMarketingOk(true);
+		Account freshAccount = new Account.Builder("ch").firstName("geetha")
+								.userName("gee123").email("gee@g.com")
+								.marketingOk(true).acceptTerms(true).enabled(true).build();
 		
 		myDAO.create(freshAccount, "gee123");
 		

@@ -29,7 +29,10 @@ public class DuplicateInSetTester {
 			e.printStackTrace();
 		}
 		
+		//the previous a is scoped only to the try block
 		Collection<String> a = new ArrayList<String>();
+		
+		System.out.println("the class of a " + a.getClass());
 		
 		
 	}
