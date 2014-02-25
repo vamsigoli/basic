@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vamsi.spring.beans.Account;
 import com.vamsi.spring.forms.AccountFormValidation;
@@ -49,14 +50,20 @@ public class AccountValidationController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String postRegistrationForm(
 			@ModelAttribute("accountFormValidation") @Valid AccountFormValidation form,
-			BindingResult result) {
+			BindingResult result, final RedirectAttributes redirectAttributes) {
 		log.info("Created registration: {}", form);
 		
 		Account account = toAccount(form);
 		
-		accountService.registerAccount(account, form.getPassword(), result);
+		boolean registerResult = accountService.registerAccount(account, form.getPassword(), result);
+		
+		log.info("result of registerAccount " + registerResult);
 		
 		convertPasswordError(result);
+		
+		redirectAttributes.addFlashAttribute("account", account);
+		
+	
 		return (result.hasErrors() ? VN_REG_FORM : VN_REG_OK);
 	}
 	

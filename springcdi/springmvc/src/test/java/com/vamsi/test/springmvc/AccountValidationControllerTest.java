@@ -14,7 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 
 import com.vamsi.spring.springmvc.controller.AccountValidationController;
 import com.vamsi.spring.springmvc.service.AccountService;
@@ -45,11 +46,21 @@ public class AccountValidationControllerTest {
 	
 	@Test
 	public void test_postRegistrationForm() throws Exception {
-		this.mockMvc.perform(post("/registerusers/newaccount"))
+		this.mockMvc.perform(post("/registerusers")
+					.param("username", "abc123")
+					.param("password", "abc123")
+					.param("confirmPassword", "abc123")
+					.param("email", "abc@g.com")
+					.param("firstName", "abc")
+					.param("lastName", "abc")
+					.param("marketingOk", "true")
+					.param("_marketingOk", "on")
+					.param("acceptTerms", "true")
+					.param("_acceptTerms", "on"))
 					.andDo(print())
-					.andExpect(status().isOk())
-					.andExpect(model().attributeExists("accountFormValidation"))
-					.andExpect(view().name("users/registrationForm"));
+					.andExpect(status().isMovedTemporarily())
+					.andExpect(redirectedUrl("registration_ok"))
+					.andExpect(flash().attributeExists("account"));
 	}
 
 }
