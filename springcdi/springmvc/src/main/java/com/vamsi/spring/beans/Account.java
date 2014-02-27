@@ -37,6 +37,11 @@ public class Account {
 		this.enabled = builder.enabled;
 		
 	}
+	
+	//jpa needs an default constructor for instantiation. hibernate is ok with private. but others may need protected.
+	//http://paulszulc.wordpress.com/2010/01/04/a-proper-way-for-jpa-entities-instantiation/
+	
+	private Account() {}
 
 	public Long getId() { return id; }
 

@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,8 +13,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vamsi.spring.beans.Account;
@@ -28,6 +31,8 @@ public class AccountValidationController {
 
 	private static final String VN_REG_FORM = "users/registrationForm";
 	private static final String VN_REG_OK = "redirect:registration_ok";
+	
+	
 	
 	@Autowired
 	AccountService accountService;
@@ -47,10 +52,36 @@ public class AccountValidationController {
 		return VN_REG_FORM;
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public String postRegistrationForm(
-			@ModelAttribute("accountFormValidation") @Valid AccountFormValidation form,
+			@ModelAttribute("accountFormValidation") AccountFormValidation form,
 			BindingResult result, final RedirectAttributes redirectAttributes) {
+//		log.info("Created registration: {}", form);
+//		
+//		Account account = toAccount(form);
+//		
+//		boolean registerResult = accountService.registerAccount(account, form.getPassword(), result);
+//		
+//		log.info("result of registerAccount " + registerResult);
+//		
+//		convertPasswordError(result);
+//		
+//		redirectAttributes.addFlashAttribute("account", account);
+		//calling the rest method to not repeat the logic. based on http://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
+		
+		Account account = postRegistrationRest(form, result);
+		
+		redirectAttributes.addFlashAttribute("account", account);
+		
+	
+		return (result.hasErrors() ? VN_REG_FORM : VN_REG_OK);
+	}
+	
+	@RequestMapping(value = "/addrest", method = RequestMethod.POST,consumes={MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
+	produces={MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	public @ResponseBody Account postRegistrationRest(
+			@RequestBody @Valid AccountFormValidation form,
+			BindingResult result) {
 		log.info("Created registration: {}", form);
 		
 		Account account = toAccount(form);
@@ -61,11 +92,11 @@ public class AccountValidationController {
 		
 		convertPasswordError(result);
 		
-		redirectAttributes.addFlashAttribute("account", account);
-		
-	
-		return (result.hasErrors() ? VN_REG_FORM : VN_REG_OK);
+		return account;
 	}
+	
+	
+	
 	
 	private static Account toAccount(AccountFormValidation form) {
 //		Account account = new Account();

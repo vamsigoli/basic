@@ -5,7 +5,7 @@
 <title>New User Registration</title>
 </head>
 <body>
-	<form:form action="." modelAttribute="accountFormValidation">
+	<form:form action="adduser" modelAttribute="accountFormValidation">
 
 		<form:errors path="*">
 			<div>
