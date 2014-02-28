@@ -2,6 +2,7 @@ package com.vamsi.test.springmvc;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -11,8 +12,20 @@ import org.mockito.stubbing.Answer;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.eq;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
@@ -31,21 +44,61 @@ import com.vamsi.spring.beans.Account;
 import com.vamsi.spring.forms.AccountFormValidation;
 import com.vamsi.spring.springmvc.controller.AccountValidationController;
 import com.vamsi.spring.springmvc.service.AccountService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
 public class AccountValidationControllerTest {
+	
+	@Configuration
+	public static class BasicConfig {
+		
+		@Bean
+		public MappingJackson2HttpMessageConverter converterConfig() {
+			
+		MappingJackson2HttpMessageConverter jackson = new MappingJackson2HttpMessageConverter();
+		jackson.setObjectMapper(jacksonMapper().getObject());
+		return jackson;
+		}
+		
+		@Bean
+		public Jackson2ObjectMapperFactoryBean jacksonMapper() {
+		Jackson2ObjectMapperFactoryBean objmapper = new Jackson2ObjectMapperFactoryBean();
+		objmapper.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,DeserializationFeature.UNWRAP_ROOT_VALUE);
+		return objmapper;
+		
+		
+	}
+	
+	}
+	private static final Logger logger = LoggerFactory
+			.getLogger(AccountValidationControllerTest.class);
 
 	@Mock
 	private AccountService mockAccountService;
 
 	@InjectMocks
 	private AccountValidationController controller;
+	
+	@Autowired MappingJackson2HttpMessageConverter converter;
 
 	private MockMvc mockMvc;
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		
+		
+		
+		
+		mockMvc = MockMvcBuilders.standaloneSetup(controller) 
+				.setMessageConverters(converter)
+				.build();
+		
+		
+		
 	}
 
 	@Test
@@ -70,7 +123,7 @@ public class AccountValidationControllerTest {
 
 		this.mockMvc
 				.perform(
-						post("/registerusers").param("username", "abc123")
+						post("/registerusers/adduser").param("username", "abc123")
 								.param("password", "abc123")
 								.param("confirmPassword", "abc123")
 								.param("email", "abc@g.com")
@@ -102,7 +155,7 @@ public class AccountValidationControllerTest {
 
 		this.mockMvc
 				.perform(
-						post("/registerusers").param("username", "abc123")
+						post("/registerusers/adduser").param("username", "abc123")
 								.param("password", "abc123")
 								.param("confirmPassword", "abc123")
 								.param("email", "abc@g.com")
@@ -119,7 +172,14 @@ public class AccountValidationControllerTest {
 
 	@Test
 	public void thatAccountCreationRendersAsJson() throws Exception {
+		
+		Account account = new Account.Builder(null).build();
+		
+		Account spyacnt = spy(account);
 
+		when(spyacnt.getId()).thenReturn(22L);
+		when(any(Account.class).getId()).thenReturn(22L);
+		
 		doAnswer(new Answer<Boolean>() {
 			@Override
 			public Boolean answer(InvocationOnMock invocationOnMock)
@@ -127,10 +187,10 @@ public class AccountValidationControllerTest {
 
 				Account account = (Account) invocationOnMock.getArguments()[0];
 				account.setEnabled(true);
-				account.setEnabled(true);
 
 				return Boolean.TRUE;
 			}
+		//}).when(mockAccountService).registerAccount(eq(spyacnt),
 		}).when(mockAccountService).registerAccount(any(Account.class),
 				anyString(), any(BindingResult.class));
 
@@ -138,15 +198,17 @@ public class AccountValidationControllerTest {
 				post("/registerusers/addrest").content(standardAccountFormValidationJSON())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)).andExpect(
-				jsonPath("$.account.username").value("abc123"));
+				jsonPath("$.Account.username").value("abc123"));
 
 	}
 
 	private static String standardAccountFormValidationJSON() {
 
+		
 		String accountStr = null;
 		
 		AccountFormValidation account =  new AccountFormValidation();
+		account.setUsername("abc123");
 		account.setPassword("abc123");
 		account.setConfirmPassword("abc123");
 		account.setEmail("abc@g.com");
@@ -155,9 +217,17 @@ public class AccountValidationControllerTest {
 		account.setMarketingOk(true);
 		account.setAcceptTerms(true);
 		
-
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 		
+		try {
+		accountStr = mapper.writeValueAsString(account);
+		}
+		catch (Exception e) {
+			//do nothing. should not come here.
+		}
 		
+		logger.debug("json binded account {} " + accountStr);
 
 		return accountStr;
 	}

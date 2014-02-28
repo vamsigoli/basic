@@ -8,11 +8,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 //import com.vamsi.spring.beans.Account;
 
@@ -118,6 +122,15 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         r.addStatusCode("error/404", org.springframework.http.HttpStatus.NOT_FOUND.value());
         return r;
     }
+	
+	@Bean(name="jackson2ObjectMapperFactoryBean") 
+	public Jackson2ObjectMapperFactoryBean  createJackson2ObjectMapperFactoryBean () {
+		Jackson2ObjectMapperFactoryBean  factoryBean = new Jackson2ObjectMapperFactoryBean ();
+		
+		factoryBean.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,DeserializationFeature.UNWRAP_ROOT_VALUE);
+		return factoryBean;
+		
+	}
 	
 	
 

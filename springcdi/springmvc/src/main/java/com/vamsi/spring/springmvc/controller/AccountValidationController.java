@@ -69,6 +69,8 @@ public class AccountValidationController {
 //		redirectAttributes.addFlashAttribute("account", account);
 		//calling the rest method to not repeat the logic. based on http://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
 		
+		log.debug("received regular registration method");
+		
 		Account account = postRegistrationRest(form, result);
 		
 		redirectAttributes.addFlashAttribute("account", account);
