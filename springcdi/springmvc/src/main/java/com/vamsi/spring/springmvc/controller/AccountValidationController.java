@@ -90,7 +90,7 @@ public class AccountValidationController {
 		
 		boolean registerResult = accountService.registerAccount(account, form.getPassword(), result);
 		
-		log.info("result of registerAccount " + registerResult);
+		log.info("result of registerAccount " + registerResult + " " + account.getId());
 		
 		convertPasswordError(result);
 		

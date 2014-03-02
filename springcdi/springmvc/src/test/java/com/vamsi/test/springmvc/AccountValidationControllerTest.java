@@ -12,10 +12,6 @@ import org.mockito.stubbing.Answer;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.eq;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,28 +47,29 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class AccountValidationControllerTest {
-	
+
 	@Configuration
 	public static class BasicConfig {
-		
+
 		@Bean
 		public MappingJackson2HttpMessageConverter converterConfig() {
-			
-		MappingJackson2HttpMessageConverter jackson = new MappingJackson2HttpMessageConverter();
-		jackson.setObjectMapper(jacksonMapper().getObject());
-		return jackson;
+
+			MappingJackson2HttpMessageConverter jackson = new MappingJackson2HttpMessageConverter();
+			jackson.setObjectMapper(jacksonMapper().getObject());
+			return jackson;
 		}
-		
+
 		@Bean
 		public Jackson2ObjectMapperFactoryBean jacksonMapper() {
-		Jackson2ObjectMapperFactoryBean objmapper = new Jackson2ObjectMapperFactoryBean();
-		objmapper.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,DeserializationFeature.UNWRAP_ROOT_VALUE);
-		return objmapper;
-		
-		
+			Jackson2ObjectMapperFactoryBean objmapper = new Jackson2ObjectMapperFactoryBean();
+			objmapper.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,
+					DeserializationFeature.UNWRAP_ROOT_VALUE);
+			return objmapper;
+
+		}
+
 	}
-	
-	}
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(AccountValidationControllerTest.class);
 
@@ -81,24 +78,19 @@ public class AccountValidationControllerTest {
 
 	@InjectMocks
 	private AccountValidationController controller;
-	
-	@Autowired MappingJackson2HttpMessageConverter converter;
+
+	@Autowired
+	MappingJackson2HttpMessageConverter converter;
 
 	private MockMvc mockMvc;
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		
-		
-		
-		
-		mockMvc = MockMvcBuilders.standaloneSetup(controller) 
-				.setMessageConverters(converter)
-				.build();
-		
-		
-		
+
+		mockMvc = MockMvcBuilders.standaloneSetup(controller)
+				.setMessageConverters(converter).build();
+
 	}
 
 	@Test
@@ -123,7 +115,8 @@ public class AccountValidationControllerTest {
 
 		this.mockMvc
 				.perform(
-						post("/registerusers/adduser").param("username", "abc123")
+						post("/registerusers/adduser")
+								.param("username", "abc123")
 								.param("password", "abc123")
 								.param("confirmPassword", "abc123")
 								.param("email", "abc@g.com")
@@ -155,7 +148,8 @@ public class AccountValidationControllerTest {
 
 		this.mockMvc
 				.perform(
-						post("/registerusers/adduser").param("username", "abc123")
+						post("/registerusers/adduser")
+								.param("username", "abc123")
 								.param("password", "abc123")
 								.param("confirmPassword", "abc123")
 								.param("email", "abc@g.com")
@@ -173,13 +167,36 @@ public class AccountValidationControllerTest {
 	@Test
 	public void thatAccountCreationRendersAsJson() throws Exception {
 		
-		Account account = new Account.Builder(null).build();
-		
-		Account spyacnt = spy(account);
+		//any of the below to somehow mock getId of the account class doesnot work.
+		//we get account.getId method as null only. verification of the location information
+		//can be done through integration test only using a rest template and a full fleged 
+		//spring containter availability
 
-		when(spyacnt.getId()).thenReturn(22L);
-		when(any(Account.class).getId()).thenReturn(22L);
-		
+		// Account account = new Account.Builder(null).build();
+
+		// Account spyacnt = spy(account);
+
+		// when(spyacnt.getId()).thenReturn(22L);
+		// when(any(Account.class).getId()).thenReturn(22L);
+
+		// doReturn(22).when(spyacnt).getId();
+		// doReturn(22).when(any(Account.class)).getId();
+
+		// Account a = Mockito.spy(new Account.Builder("abc").build());
+		// doReturn(22L).when(a).getId();
+
+		// Long a = new Long(22L);
+		//
+		// Account mock = mock(Account.class);
+		//
+		// doAnswer(new Answer<Long>() {
+		// @Override
+		// public Long answer(InvocationOnMock invocationOnMock) throws
+		// Throwable {
+		// return 22L;
+		// }
+		// }).when(any(Account.class)).getId();
+
 		doAnswer(new Answer<Boolean>() {
 			@Override
 			public Boolean answer(InvocationOnMock invocationOnMock)
@@ -187,15 +204,26 @@ public class AccountValidationControllerTest {
 
 				Account account = (Account) invocationOnMock.getArguments()[0];
 				account.setEnabled(true);
+				account.setFirstName("bca123");
+				// below also doesnt work because of pass by value semantics.
+				// Account spier = spy(account);
+				// doReturn(new Long(22)).when(spier).getId();
 
-				return Boolean.TRUE;
+				// spier.setFirstName("cba123");
+
+				// account = spier;
+
+				return Boolean.FALSE;
 			}
-		//}).when(mockAccountService).registerAccount(eq(spyacnt),
+			// }).when(mockAccountService).registerAccount(eq(spyacnt),
 		}).when(mockAccountService).registerAccount(any(Account.class),
 				anyString(), any(BindingResult.class));
 
+		// logger.debug("calling getId on a {} ",a.getId());
+
 		this.mockMvc.perform(
-				post("/registerusers/addrest").content(standardAccountFormValidationJSON())
+				post("/registerusers/addrest")
+						.content(standardAccountFormValidationJSON())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)).andExpect(
 				jsonPath("$.Account.username").value("abc123"));
@@ -204,10 +232,9 @@ public class AccountValidationControllerTest {
 
 	private static String standardAccountFormValidationJSON() {
 
-		
 		String accountStr = null;
-		
-		AccountFormValidation account =  new AccountFormValidation();
+
+		AccountFormValidation account = new AccountFormValidation();
 		account.setUsername("abc123");
 		account.setPassword("abc123");
 		account.setConfirmPassword("abc123");
@@ -216,17 +243,16 @@ public class AccountValidationControllerTest {
 		account.setLastName("abc");
 		account.setMarketingOk(true);
 		account.setAcceptTerms(true);
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-		
+
 		try {
-		accountStr = mapper.writeValueAsString(account);
+			accountStr = mapper.writeValueAsString(account);
+		} catch (Exception e) {
+			// do nothing. should not come here.
 		}
-		catch (Exception e) {
-			//do nothing. should not come here.
-		}
-		
+
 		logger.debug("json binded account {} " + accountStr);
 
 		return accountStr;
