@@ -54,7 +54,7 @@ public class AccountValidationController {
 
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public String postRegistrationForm(
-			@ModelAttribute("accountFormValidation") AccountFormValidation form,
+			@ModelAttribute("accountFormValidation") @Valid AccountFormValidation form,
 			BindingResult result, final RedirectAttributes redirectAttributes) {
 //		log.info("Created registration: {}", form);
 //		
@@ -68,7 +68,8 @@ public class AccountValidationController {
 //		
 //		redirectAttributes.addFlashAttribute("account", account);
 		//calling the rest method to not repeat the logic. based on http://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
-		
+		//we need to have the @Valid annotation though in the method signature at form level as well as it is invoked only by the container. 
+		//our individual call to the rest interface below doesnot invoke the validation features
 		log.debug("received regular registration method");
 		
 		Account account = postRegistrationRest(form, result);

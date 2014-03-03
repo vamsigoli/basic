@@ -1,5 +1,6 @@
-package com.vamsi.spring.springmvc;
+package com.vamsi.spring.config;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.springframework.context.MessageSource;
@@ -8,7 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -24,7 +27,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @EnableWebMvc
 // this registers all the default handlermappings and handleradapters to the
 // context
-@ComponentScan("com.vamsi.spring.springmvc")
+@ComponentScan("com.vamsi.spring.springmvc.controller")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
@@ -123,13 +126,28 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         return r;
     }
 	
-	@Bean(name="jackson2ObjectMapperFactoryBean") 
-	public Jackson2ObjectMapperFactoryBean  createJackson2ObjectMapperFactoryBean () {
+	
+	@Bean
+	public MappingJackson2HttpMessageConverter converterConfig() {
+
+		MappingJackson2HttpMessageConverter jackson = new MappingJackson2HttpMessageConverter();
+		jackson.setObjectMapper(jacksonMapper().getObject());
+		return jackson;
+	}
+	
+	@Bean
+	public Jackson2ObjectMapperFactoryBean  jacksonMapper () {
 		Jackson2ObjectMapperFactoryBean  factoryBean = new Jackson2ObjectMapperFactoryBean ();
 		
 		factoryBean.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,DeserializationFeature.UNWRAP_ROOT_VALUE);
 		return factoryBean;
 		
+	}
+	
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		
+		converters.add(converterConfig());
 	}
 	
 	

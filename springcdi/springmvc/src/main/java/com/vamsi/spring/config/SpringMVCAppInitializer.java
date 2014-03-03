@@ -1,4 +1,4 @@
-package com.vamsi.spring.springmvc;
+package com.vamsi.spring.config;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

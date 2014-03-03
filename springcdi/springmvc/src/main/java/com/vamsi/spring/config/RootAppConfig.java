@@ -1,8 +1,9 @@
-package com.vamsi.spring.springmvc;
+package com.vamsi.spring.config;
 
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
@@ -13,11 +14,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
-import com.vamsi.spring.springmvc.dao.AccountDao;
-import com.vamsi.spring.springmvc.dao.AccountDaoImpl;
-
 @Configuration
 @EnableTransactionManagement
+@ComponentScan({"com.vamsi.spring.springmvc.dao","com.vamsi.spring.springmvc.service"})
 public class RootAppConfig {
 	
 	@Bean
@@ -49,10 +48,10 @@ public class RootAppConfig {
 		return jdbcTemplate;
 	}
 	
-	@Bean
-	public AccountDao accountDaoImpl() {
-		return new AccountDaoImpl();
-	}
+//	@Bean
+//	public AccountDao accountDaoImpl() {
+//		return new AccountDaoImpl();
+//	}
 	
 //	@Bean
 //	   public PlatformTransactionManager transactionManager(){

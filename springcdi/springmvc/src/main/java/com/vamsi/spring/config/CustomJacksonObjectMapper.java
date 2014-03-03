@@ -1,4 +1,4 @@
-package com.vamsi.spring.springmvc;
+package com.vamsi.spring.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

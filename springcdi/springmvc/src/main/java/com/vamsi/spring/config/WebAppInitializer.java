@@ -1,4 +1,4 @@
-package com.vamsi.spring.springmvc;
+package com.vamsi.spring.config;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
