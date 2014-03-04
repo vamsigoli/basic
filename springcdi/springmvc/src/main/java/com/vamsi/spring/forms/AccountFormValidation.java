@@ -3,6 +3,7 @@ package com.vamsi.spring.forms;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,6 +15,7 @@ import org.hibernate.validator.constraints.Email;
 //for crossfield validations use a @AssertTrue validation over a boolean returning method like isValidPassword below
 //also @ScriptAssert is a global error while @AssertTrue below is a field error
 //@ScriptAssert(message="account.password.mismatch.message",lang="javascript", script="_this.password.equals(_this.confirmPassword)")
+@XmlRootElement
 public class AccountFormValidation {
 	private String username, password, confirmPassword, firstName, lastName,
 			email;

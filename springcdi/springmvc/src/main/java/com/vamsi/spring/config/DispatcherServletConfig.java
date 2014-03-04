@@ -12,6 +12,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -126,7 +127,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         return r;
     }
 	
-	
+	@Bean
+	public Jaxb2RootElementHttpMessageConverter xmlconverterConfig() {
+		Jaxb2RootElementHttpMessageConverter xmlconverter = new Jaxb2RootElementHttpMessageConverter();
+		return xmlconverter;
+	}
 	@Bean
 	public MappingJackson2HttpMessageConverter converterConfig() {
 
@@ -148,6 +153,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		
 		converters.add(converterConfig());
+		converters.add(xmlconverterConfig());
 	}
 	
 	

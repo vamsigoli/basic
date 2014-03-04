@@ -1,5 +1,6 @@
 package com.vamsi.test.springmvc;
 
+
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -102,8 +104,9 @@ public class AccountValidationIntegrationTest {
 				post("/registerusers/addrest")
 						.content(standardAccountFormValidationXML())
 						.contentType(MediaType.APPLICATION_XML)
-						.accept(MediaType.APPLICATION_XML)).andExpect(
-				xpath("Account/username").string("abc123"));
+						.accept(MediaType.APPLICATION_XML)).andDo(print())
+						.andExpect(
+				xpath("account/username").string("abc123"));
 	}
 
 	private static String standardAccountFormValidationXML() {
@@ -126,7 +129,7 @@ public class AccountValidationIntegrationTest {
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			JAXBElement<AccountFormValidation> je2 = new JAXBElement<AccountFormValidation>(
-					new QName("AccountFormValidation"),
+					new QName("accountFormValidation"),
 					AccountFormValidation.class, account);
 
 			StringWriter str = new StringWriter();

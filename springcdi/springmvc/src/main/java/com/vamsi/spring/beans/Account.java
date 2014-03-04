@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,6 +17,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 //bean validation can happen on the jpa classes as well to make the system more robust
 //currently, i have kept the validations on the spring form bean
 //but the builder i have checks for any validations to happen and raise error accordingly
+//builder also is working on the jpa object only. so validation checks are not happening at 
+//the builder level and at jpa object level. only the form bean has the checks.
+
+@XmlRootElement
+//root element is required to make spring mvc jaxb things to work automatically
 
 @NamedQuery(name = "findAccountByUsername", query = "from Account where username = :username")
 @Entity
