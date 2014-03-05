@@ -73,6 +73,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 				"nominee/thanks");
 		registry.addViewController("/registerusers/registration_ok").setViewName(
 				"users/registrationOk");
+		registry.addViewController("/login").setViewName(
+				"users/loginForm");
 
 		super.addViewControllers(registry);
 	}

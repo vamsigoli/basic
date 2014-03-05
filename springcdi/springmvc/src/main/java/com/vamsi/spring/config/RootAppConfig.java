@@ -10,6 +10,8 @@ import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 //import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
@@ -69,6 +71,8 @@ public class RootAppConfig {
 	      
 	      return transactionManager;
 	   }
+	
+	
 
 	
 

@@ -34,6 +34,14 @@ public class AccountServiceImpl implements AccountService {
 		}
 		return valid;
 	}
+	
+	@Transactional(readOnly=true)
+	public Account getAccountDetails(String username) {
+		log.debug("received call for getting details for user");
+		
+		Account account = accountDao.findByUsername(username);
+		return account;
+	}
 
 	private void validateUsername(String username, Errors errors) {
 		if (accountDao.findByUsername(username) != null) {

@@ -8,5 +8,7 @@ public interface AccountService {
 	
 	boolean registerAccount(
 			Account account, String password, Errors errors);
+	
+	Account getAccountDetails(String user) ;
 
 }
