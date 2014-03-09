@@ -32,6 +32,16 @@ public class AccountDaoImpl extends JpaDao<Long, Account> implements AccountDao 
 				account.getUsername());
 	}
 
+	public void update(Account account, String password) {
+		update(account);
+		
+		logger.debug("created account successfully. adding password");
+		
+		
+		jdbcTemplate.update(UPDATE_PASSWORD_SQL, password,
+				account.getUsername());
+	}
+
 	
 	//only one user is expected in the system with the username.
 	public Account findByUsername(String username) {

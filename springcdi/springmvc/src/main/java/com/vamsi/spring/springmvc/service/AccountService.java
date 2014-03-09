@@ -10,5 +10,8 @@ public interface AccountService {
 			Account account, String password, Errors errors);
 	
 	Account getAccountDetails(String user) ;
+	boolean updateAccount(
+			Account account, String password, Errors errors);
+	
 
 }

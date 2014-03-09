@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <title>Update User Details</title>
@@ -16,7 +17,8 @@
 
 		<h1>Update User Registration</h1>
 		<div>
-			Username: ${accountFormValidation.username}
+			Username(Un Editable): 
+			<form:input readonly="true" path="username" />
 			
 		</div>
 
@@ -64,6 +66,11 @@
 		<input type="hidden"                        
         name="${_csrf.parameterName}"
         value="${_csrf.token}"/>
+        
+        
+        <form:input type="hidden"  path="version" />
 	</form:form>
+	
+<p><a href="<c:url value="/logout"/>">Logout</a></p>
 </body>
 </html>

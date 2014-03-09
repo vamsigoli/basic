@@ -5,7 +5,12 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vamsi.spring.beans.Account;
@@ -25,6 +31,7 @@ import com.vamsi.spring.springmvc.service.AccountService;
 
 @Controller
 @RequestMapping("/registerusers")
+@SessionAttributes("account")
 public class AccountValidationController {
 	private static final Logger log = LoggerFactory
 			.getLogger(AccountValidationController.class);
@@ -32,23 +39,29 @@ public class AccountValidationController {
 	private static final String VN_REG_FORM = "users/registrationForm";
 	private static final String VN_REG_OK = "redirect:registration_ok";
 	
+	@Autowired AccountService accountService;
 	
+	@Autowired @Qualifier("authenticationManager") 
+	protected AuthenticationManager authenticationManager;
 	
-	@Autowired
-	AccountService accountService;
-	
-	
-	
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
+	@InitBinder public void initBinder(WebDataBinder binder) {
 		binder.setAllowedFields(new String[] { "username", "password",
 				"confirmPassword", "firstName", "lastName", "email",
 				"marketingOk", "acceptTerms" });
 	}
+	
+	@ModelAttribute
+	public void init(Model model) {
+	
+		//conversation at controller level. first call will have no attribute. second will have it because of sessionattributes
+		if (!model.containsAttribute("accountFormValidation")) {
+			
+		model.addAttribute("accountFormValidation", new AccountFormValidation());
+		}
+	}
 
 	@RequestMapping(value = "newaccount", method = RequestMethod.GET)
 	public String getRegistrationForm(Model model) {
-		model.addAttribute("accountFormValidation", new AccountFormValidation());
 		return VN_REG_FORM;
 	}
 
@@ -56,26 +69,29 @@ public class AccountValidationController {
 	public String postRegistrationForm(
 			@ModelAttribute("accountFormValidation") @Valid AccountFormValidation form,
 			BindingResult result, final RedirectAttributes redirectAttributes) {
-//		log.info("Created registration: {}", form);
-//		
-//		Account account = toAccount(form);
-//		
-//		boolean registerResult = accountService.registerAccount(account, form.getPassword(), result);
-//		
-//		log.info("result of registerAccount " + registerResult);
-//		
-//		convertPasswordError(result);
-//		
+		
+		
 //		redirectAttributes.addFlashAttribute("account", account);
 		//calling the rest method to not repeat the logic. based on http://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc
 		//we need to have the @Valid annotation though in the method signature at form level as well as it is invoked only by the container. 
 		//our individual call to the rest interface below doesnot invoke the validation features
+		
+		
 		log.debug("received regular registration method");
 		
 		Account account = postRegistrationRest(form, result);
 		
-		redirectAttributes.addFlashAttribute("account", account);
+		redirectAttributes.addFlashAttribute("accountFormValidation", form);
 		
+		//auto login if registration is successful
+		
+		if (!result.hasErrors()) {
+			Authentication authRequest =
+					new UsernamePasswordAuthenticationToken(
+					form.getUsername(), form.getPassword());
+					Authentication authResult = authenticationManager.authenticate(authRequest);
+					SecurityContextHolder.getContext().setAuthentication(authResult);
+		}
 	
 		return (result.hasErrors() ? VN_REG_FORM : VN_REG_OK);
 	}
@@ -98,9 +114,6 @@ public class AccountValidationController {
 		return account;
 	}
 	
-	
-	
-	
 	private static Account toAccount(AccountFormValidation form) {
 //		Account account = new Account();
 //		account.setUsername(form.getUsername());
@@ -117,7 +130,7 @@ public class AccountValidationController {
 		Account account = new Account.Builder(form.getLastName()).firstName(form.getFirstName())
 								.userName(form.getUsername()).email(form.getEmail())
 								.marketingOk(form.isMarketingOk()).acceptTerms(form.getAcceptTerms())
-								.enabled(true).build();
+								.enabled(true).role("ROLE_USER").build();
 		
 		log.info("converted to entity: {}",account);
 		
@@ -154,5 +167,4 @@ public class AccountValidationController {
 		
 		
 	}
-
 }

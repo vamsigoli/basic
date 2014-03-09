@@ -1,5 +1,6 @@
 package com.vamsi.spring.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,7 +27,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @NamedQuery(name = "findAccountByUsername", query = "from Account where username = :username")
 @Entity
-public class Account {
+public class Account implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@SequenceGenerator(name = "ACCOUNT_ID_GENERATOR", sequenceName = "ACC_SEQ", initialValue = 10, allocationSize = 1)
 	@Id
@@ -41,6 +48,8 @@ public class Account {
 		this.email = builder.email;
 		this.username = builder.userName;
 		this.enabled = builder.enabled;
+		this.role= builder.role;
+
 		
 	}
 	
@@ -48,6 +57,10 @@ public class Account {
 	//http://paulszulc.wordpress.com/2010/01/04/a-proper-way-for-jpa-entities-instantiation/
 	
 	private Account() {}
+	
+	@Version @Column(name="OPTLOCK") private int versionNum;
+    public int getVersionNum() { return versionNum; }
+
 
 	public Long getId() { return id; }
 
@@ -62,6 +75,12 @@ public class Account {
 	
 	String email;
 	
+	String role;
+	
+	public String getRole() { return role; }
+
+	public void setRole(String role) { this.role = role; }
+
 	@Column(name = "marketing_ok")
 	@Convert(converter = BooleanYNConverter.class) private boolean marketingOk = true;
 
@@ -121,13 +140,16 @@ public class Account {
 		private boolean acceptTerms;
 		private boolean enabled;
 		private String userName;
+		private String role;
 		
 		public Builder(String lastName) { this.lastName = lastName; }
 		
 		public Builder firstName(String firstName) {this.firstName = firstName; return this;}
 		
 		public Builder email(String email) {this.email = email; return this;}
-		
+
+		public Builder role(String role) { this.role = role; return this;}
+
 		public Builder marketingOk(boolean marketingOk) {this.marketingOk = marketingOk; return this;}
 		
 		public Builder acceptTerms(boolean acceptTerms) { this.acceptTerms = acceptTerms;return this; }

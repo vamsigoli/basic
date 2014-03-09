@@ -28,7 +28,7 @@ public class JpaDao<K, T> implements Dao<K, T> {
 	public T create(T t) {
 		this.em.persist(t);
 		this.em.flush();
-		this.em.refresh(t);
+		this.em.refresh(t);// this will make the default values set in db to be available to the entity
 		return t;
 	}
 

@@ -75,7 +75,7 @@ public class AccountDaoTest {
 //		freshAccount.setMarketingOk(true);
 		Account freshAccount = new Account.Builder("ch").firstName("geetha")
 								.userName("gee123").email("gee@g.com")
-								.marketingOk(true).acceptTerms(true).enabled(true).build();
+								.marketingOk(true).acceptTerms(true).enabled(true).role("USER").build();
 		
 		myDAO.create(freshAccount, "gee123");
 		

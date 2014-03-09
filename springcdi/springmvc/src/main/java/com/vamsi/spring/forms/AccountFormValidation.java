@@ -1,5 +1,7 @@
 package com.vamsi.spring.forms;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,14 +18,36 @@ import org.hibernate.validator.constraints.Email;
 //also @ScriptAssert is a global error while @AssertTrue below is a field error
 //@ScriptAssert(message="account.password.mismatch.message",lang="javascript", script="_this.password.equals(_this.confirmPassword)")
 @XmlRootElement
-public class AccountFormValidation {
+public class AccountFormValidation implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String username, password, confirmPassword, firstName, lastName,
 			email;
 	private boolean marketingOk = true;
 	private boolean acceptTerms = false;
+	private int version;
+	private long Id;
 
 	
 	
+	public long getId() {
+		return Id;
+	}
+
+	public void setId(long id) {
+		Id = id;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
 	@NotNull
 	@Size(min = 1, max = 50)
 	public String getUsername() {

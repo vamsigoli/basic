@@ -5,18 +5,18 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
+@EnableWebMvcSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private final String auth_by_user = " SELECT USERNAME, PASSWORD, CASE ENABLED WHEN 'Y' THEN 'true' ELSE 'false' END 'ENABLED' FROM ACCOUNT  WHERE USERNAME=?;";
+	private final String auth_by_user = " SELECT USERNAME, PASSWORD, CASE ENABLED WHEN 'Y' THEN 'true' ELSE 'false' END ENABLED FROM ACCOUNT  WHERE USERNAME=?;";
 	
 	private final String auth_for_role = "SELECT USERNAME,ROLE from account a where a.username=?";
 	
@@ -76,6 +76,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
+		
+		//if we dont want to insert ROLE_ for the hasRole method use hasAuthority method instead of hasRole
+		//the default login page is /login. so we dont have to specify loginPage. similarly default logout page
+		//is /logout
         http
             .authorizeRequests()
             .antMatchers("/registerusers/*").permitAll()
@@ -85,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             .loginPage("/login")
             .permitAll()
+            .defaultSuccessUrl("/main")
             .and()
             .logout()
             .permitAll();
@@ -93,6 +98,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Bean(name="authenticationManager")
+	public AuthenticationManager authenticationManagerBean( ) throws Exception {
+    	
+    	return super.authenticationManagerBean();
+    }
+     
+	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth
 //             .inMemoryAuthentication()
@@ -102,8 +114,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        
 //        
     	
-    	auth.jdbcAuthentication().getUserDetailsService().setDataSource(datasource);
-    	auth.jdbcAuthentication().usersByUsernameQuery(auth_by_user).authoritiesByUsernameQuery(auth_for_role);
+    	//auth.jdbcAuthentication().getUserDetailsService().setDataSource(datasource);
+    	auth.jdbcAuthentication().usersByUsernameQuery(auth_by_user).authoritiesByUsernameQuery(auth_for_role).getUserDetailsService().setDataSource(datasource);
     	
     	
     }

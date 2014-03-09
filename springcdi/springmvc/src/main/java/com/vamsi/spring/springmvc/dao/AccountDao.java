@@ -6,5 +6,6 @@ public interface AccountDao extends Dao<Long,Account > {
 	
 	void create(Account account, String password);
 	Account findByUsername(String username);
+	void update(Account account, String password);
 
 }

@@ -50,4 +50,25 @@ public class AccountServiceImpl implements AccountService {
 		}
 	}
 
+	@Transactional(readOnly = false)
+	public boolean updateAccount(Account account, String password,
+			Errors errors) {
+		
+		log.debug("received account to register {}" ,account );
+		
+		existingUsername(account.getUsername(), errors);
+		boolean valid = !errors.hasErrors();
+		if (valid) {
+			accountDao.update(account, password);
+		}
+		return valid;
+	}
+	
+	private void existingUsername(String username, Errors errors) {
+		if (accountDao.findByUsername(username) == null) {
+			errors.rejectValue("username", "error.usernotpresent",
+					new String[] { username }, null);
+		}
+	}
+
 }

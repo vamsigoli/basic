@@ -12,6 +12,7 @@ import org.mockito.stubbing.Answer;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doAnswer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.TestingAuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -75,12 +79,17 @@ public class AccountValidationControllerTest {
 
 	@Mock
 	private AccountService mockAccountService;
+	
+	@Mock
+	private AuthenticationManager authenticationManager;
 
 	@InjectMocks
 	private AccountValidationController controller;
 
 	@Autowired
 	MappingJackson2HttpMessageConverter converter;
+	
+	private TestingAuthenticationProvider authProvider = new TestingAuthenticationProvider();
 
 	private MockMvc mockMvc;
 
@@ -113,6 +122,16 @@ public class AccountValidationControllerTest {
 		}).when(mockAccountService).registerAccount(any(Account.class),
 				anyString(), any(BindingResult.class));
 
+		doAnswer(new Answer<Authentication>() {
+			@Override
+			public Authentication answer(InvocationOnMock invocationOnMock)
+					throws Throwable {
+				Authentication request = (Authentication) invocationOnMock.getArguments()[0];
+				Authentication result = authProvider.authenticate(request);
+				return result;
+			}
+		}).when(authenticationManager).authenticate(any(Authentication.class));
+		
 		this.mockMvc
 				.perform(
 						post("/registerusers/adduser")
@@ -128,7 +147,7 @@ public class AccountValidationControllerTest {
 								.param("_acceptTerms", "on")).andDo(print())
 				.andExpect(status().isMovedTemporarily())
 				.andExpect(redirectedUrl("registration_ok"))
-				.andExpect(flash().attributeExists("account"));
+				.andExpect(flash().attributeExists("accountFormValidation"));
 	}
 
 	@Test
