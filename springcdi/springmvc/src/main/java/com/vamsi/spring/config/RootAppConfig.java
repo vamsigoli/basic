@@ -1,20 +1,26 @@
 package com.vamsi.spring.config;
 
+import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.scheduling.quartz.SpringBeanJobFactory;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 //import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
+
+import com.vamsi.spring.jobs.AccountsListJob;
 
 @Configuration
 @EnableTransactionManagement
@@ -71,6 +77,45 @@ public class RootAppConfig {
 	      
 	      return transactionManager;
 	   }
+	
+	@Bean
+	public SchedulerFactoryBean schedulerFactoryBean() {
+		
+		SchedulerFactoryBean sfb = new SchedulerFactoryBean();
+		sfb.setDataSource(dataSource());
+		sfb.setTransactionManager(transactionManager());
+		 sfb.setConfigLocation(new ClassPathResource("quartz.properties"));
+		 sfb.setJobFactory(beanJobFactory());
+		
+		
+		return sfb;
+		
+	}
+	
+	@Bean
+	public SpringBeanJobFactory beanJobFactory() {
+		SpringBeanJobFactory sbjf = new SpringBeanJobFactory();
+		return sbjf;
+	}
+	
+	@Bean
+public JobDetailFactoryBean accountListJob() {
+JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
+jobDetailFactory.setJobClass(AccountsListJob.class);
+jobDetailFactory.setGroup("accounts-quartz");
+return jobDetailFactory;
+}
+	
+	@Bean
+public CronTriggerFactoryBean procesoMQTrigger() {
+CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
+cronTriggerFactoryBean.setJobDetail(accountListJob().getObject());
+
+
+cronTriggerFactoryBean.setGroup("spring3-quartz");
+return cronTriggerFactoryBean;
+}
+ 
 	
 	
 

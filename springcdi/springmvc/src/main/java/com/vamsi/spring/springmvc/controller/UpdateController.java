@@ -74,6 +74,23 @@ public class UpdateController {
 		return form;
 
 	}
+	
+	@RequestMapping(value = "/userdetailsjob", method = RequestMethod.GET)
+	public String schedulejobdetails(
+			@ModelAttribute("accountFormValidation") @Valid AccountFormValidation form,
+			BindingResult result, Principal principal,
+			@ModelAttribute("account") Account account,
+			final RedirectAttributes redirectAttributes) {
+		
+		
+		
+		
+		redirectAttributes.addFlashAttribute("actionmessage",
+				"Update Successful");
+		return VN_UPD_OK;
+		
+	}
+	
 
 	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
 	public String postRegistrationForm(

@@ -26,6 +26,12 @@
 		Please update information using this link <a
 			href="<c:url value="/updateusers/getaccount"/>">Update User</a>
 	</p>
+	
+		<p>
+		Please trigger a new job for user details using <a
+			href="<c:url value="/updateusers/userdetailsjob"/>">Update User</a>
+	</p>
+	
 
 	<p>
 		<a href="<c:url value="/logout"/>">Logout</a>

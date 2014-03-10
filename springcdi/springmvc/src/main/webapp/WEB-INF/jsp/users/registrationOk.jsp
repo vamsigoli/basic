@@ -7,7 +7,7 @@
 					<c:when test="${not empty accountFormValidation && not empty accountFormValidation.lastName && not empty accountFormValidation.firstName}">
 <p>Thank you for registering.</p>
 ${accountFormValidation.firstName}, ${accountFormValidation.lastName} added successfully
-<p> Please update information using this link <a href="<c:url value="/updateusers/getaccount"/>">Update User</a></p>
+<p> Please access the application using <a href="<c:url value="/updateusers/main"/>">Update User</a></p>
 					</c:when>
 				</c:choose>
 					<p> Please register using this link <a href="<c:url value="/registerusers/newaccount"/>">New User</a></p>
