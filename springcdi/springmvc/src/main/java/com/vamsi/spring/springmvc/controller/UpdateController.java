@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vamsi.spring.beans.Account;
 import com.vamsi.spring.forms.AccountFormValidation;
+import com.vamsi.spring.jobs.JobHelperService ;
 import com.vamsi.spring.springmvc.service.AccountService;
 
 @Controller
@@ -37,8 +38,10 @@ public class UpdateController {
 	private static final String VN_UPD_FORM = "users/updateUserForm";
 	private static final String VN_UPD_OK = "redirect:main";
 
-	@Autowired
+	@Autowired 
 	AccountService accountService;
+	
+	@Autowired JobHelperService jobHelper;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -77,12 +80,11 @@ public class UpdateController {
 	
 	@RequestMapping(value = "/userdetailsjob", method = RequestMethod.GET)
 	public String schedulejobdetails(
-			@ModelAttribute("accountFormValidation") @Valid AccountFormValidation form,
-			BindingResult result, Principal principal,
-			@ModelAttribute("account") Account account,
+			Principal principal,
 			final RedirectAttributes redirectAttributes) {
 		
 		
+		jobHelper.startJob(principal.getName());
 		
 		
 		redirectAttributes.addFlashAttribute("actionmessage",
