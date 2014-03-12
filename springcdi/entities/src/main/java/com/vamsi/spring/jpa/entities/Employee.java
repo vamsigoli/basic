@@ -11,6 +11,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -35,7 +36,7 @@ public class Employee {
 	private Integer id;
 	
 	
-	@OneToOne(optional=true, cascade=CascadeType.ALL)
+	@OneToOne(optional=true, cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	//by keeping optional as false, the Employee table that gets created will have PSPACE_ID as not null
 	//by keeping true, we can create employee without parking space
 	//by cascade option as ALL, even detach will evict
@@ -44,7 +45,7 @@ public class Employee {
 	private ParkingSpace parking;
 	//by keeping unique as true we are adding a unique constraint on PSPACE_ID in EMPLOYEE table.
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="DEPT_ID")
 	//its not unique. there will be many employees for a department. its a bidirectional relationship
 	//department is non owning side and will have @mappedBy("department") the name of attribute 
@@ -52,7 +53,7 @@ public class Employee {
 	private Department department;
 	
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Collection<Project> projects = new ArrayList<Project>();
 	//here we are defaulting to the JPA provided join table, EMPLOYEE_PROJECT. if we want to
 	//specify our own, we need to give @JoinTable. The column in the EMPLOYEE_PROJECT for 
