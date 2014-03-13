@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+ <xsd:schema targetNamespace="http://www.example.org/schema/DoubleIt" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	 elementFormDefault="qualified">
+         <xsd:element name="DoubleIt">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="numberToDouble" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="DoubleItResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="doubledNumber" type="xsd:int" />
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         
+      </xsd:schema>

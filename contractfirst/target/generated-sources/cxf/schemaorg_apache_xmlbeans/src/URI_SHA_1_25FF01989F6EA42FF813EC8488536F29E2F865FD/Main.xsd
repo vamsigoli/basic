@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+ <xsd:schema targetNamespace="http://Namespacetest.com/Purchase" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:ord="http://Namespacetest.com/OrderTypes" 
+		    xmlns:pur="http://Namespacetest.com/Purchase" 
+			xmlns:cmn="http://Namespacetest.com/CommonTypes" 
+			xmlns:cust="http://Namespacetest.com/CustomerTypes"
+	 elementFormDefault="qualified">
+        <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://Namespacetest.com/CommonTypes" />
+	<xsd:import schemaLocation="CustomerTypes.xsd" namespace="http://Namespacetest.com/CustomerTypes" />
+	<xsd:import schemaLocation="OrderTypes.xsd" namespace="http://Namespacetest.com/OrderTypes" />
+	<xsd:element name="Purchase">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="OrderDetail" type="ord:OrderType" />
+				<xsd:element name="PaymentMethod" type="cmn:PaymentMethodType" />
+				<xsd:element ref="pur:CustomerDetails"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CustomerDetails" type="cust:CustomerType"/>
+	<xsd:element name="Confirmation" type="ord:ConfirmationType" />
+         
+      </xsd:schema>

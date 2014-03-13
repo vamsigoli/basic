@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="Purchase"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:pur="http://Namespacetest.com/Purchase"
+	xmlns:tns="http://Namespacetest.com/shopping" targetNamespace="http://Namespacetest.com/shopping">
+	
+		<wsdl:types>
+		<xsd:schema targetNamespace="http://Namespacetest.com/shopping">
+			<xsd:import namespace="http://Namespacetest.com/Purchase" schemaLocation="Main.xsd" />
+		</xsd:schema>
+		
+	</wsdl:types>
+	
+	<wsdl:message name="PurchaseRequest">
+		<wsdl:part element="pur:Purchase" name="purchase" />
+		<wsdl:part element="pur:CustomerDetails" name="customer" />
+	</wsdl:message>
+	<wsdl:message name="PurchaseResponse">
+		<wsdl:part element="pur:Confirmation" name="confirm" />
+	</wsdl:message>
+	<wsdl:portType name="PurchasePortType">
+		<wsdl:operation name="Purchase">
+			<wsdl:input message="tns:PurchaseRequest" />
+			<wsdl:output message="tns:PurchaseResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PurchaseBinding" type="tns:PurchasePortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Purchase">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PurchaseService">
+		<wsdl:port name="PurchasePort" binding="tns:PurchaseBinding">
+			<!-- Default address for Tomcat deployment (CXF/Metro) -->
+			<soap:address location="http://localhost:8080/purchase/services/purchaseorder" />
+			<!-- Default address for Karaf deployment (CXF only) -->
+			<!--soap:address location="http://localhost:8181/cxf/doubleit"/ -->
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
