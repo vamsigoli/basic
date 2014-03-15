@@ -4,7 +4,8 @@
  * This class is not complete
  */
 
-package contractfirst;
+//package contractfirst;
+package com.namespacetest.shopping;
 
 import java.math.BigDecimal;
 import java.util.logging.Logger;
@@ -21,11 +22,14 @@ import com.namespacetest.shopping.PurchasePortType;
  * 
  */
 
+//locations specified here are superseeded by the declarations done in endpoint. 
+
+
 @javax.jws.WebService(
                       serviceName = "PurchaseService",
                       portName = "PurchasePort",
                       targetNamespace = "http://Namespacetest.com/shopping",
-                      wsdlLocation = "shopping.wsdl",
+                      wsdlLocation = "classpath:shopping.wsdl",
                       endpointInterface = "com.namespacetest.shopping.PurchasePortType")
                       
 public class PurchasePortTypeImpl implements PurchasePortType {

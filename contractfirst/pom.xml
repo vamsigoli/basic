@@ -32,11 +32,37 @@
 		  </resource>
 		</resources> 
 		<plugins>
+		
+		 <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+                <webResources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <targetPath>WEB-INF/wsdl</targetPath>
+                        <includes>
+                            <include>*.wsdl</include>
+                            <include>*.xsd</include>
+                        </includes>
+                    </resource>
+                </webResources>
+            </configuration>
+         </plugin>
+		
+		
+		
+		
+		
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>					
+					<source>1.7</source>
+					<target>1.7</target>					
 				</configuration>
 			</plugin>
 			<plugin>
@@ -53,8 +79,9 @@
 									<wsdl>${basedir}/src/main/resources/shopping.wsdl</wsdl>
 									<dataBinding>xmlbeans</dataBinding>
 									<frontEnd>jaxws21</frontEnd>
+									<wsdlLocation>classpath:shopping.wsdl</wsdlLocation>
 									 <extraargs>
-                    <extraarg>-all</extraarg>
+        <!--              <extraarg>-all</extraarg>-->
                     <extraarg>-verbose</extraarg>
                 </extraargs>
 									<faultSerialVersionUID>1</faultSerialVersionUID>
@@ -67,6 +94,12 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			
+			
+			
+			
+			
 		</plugins>
 	</build>   
   <dependencies>

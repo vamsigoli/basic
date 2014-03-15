@@ -39,10 +39,7 @@
 	</wsdl:binding>
 	<wsdl:service name="PurchaseService">
 		<wsdl:port name="PurchasePort" binding="tns:PurchaseBinding">
-			<!-- Default address for Tomcat deployment (CXF/Metro) -->
-			<soap:address location="http://localhost:8080/purchase/services/purchaseorder" />
-			<!-- Default address for Karaf deployment (CXF only) -->
-			<!--soap:address location="http://localhost:8181/cxf/doubleit"/ -->
+			<soap:address location="http://localhost:8080/contractfirst/services/purchaseorder" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

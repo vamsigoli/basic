@@ -7,6 +7,7 @@ package contractfirst;
  */
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -17,6 +18,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import com.namespacetest.customerTypes.CustomerType;
+import com.namespacetest.orderTypes.OrderType;
+import com.namespacetest.purchase.CustomerDetailsDocument;
+import com.namespacetest.purchase.PurchaseDocument;
+import com.namespacetest.purchase.PurchaseDocument.Purchase;
 import com.namespacetest.shopping.PurchasePortType;
 import com.namespacetest.shopping.PurchaseService;
 
@@ -51,15 +57,21 @@ public final class PurchasePortType_PurchasePort_Client {
         PurchaseService ss = new PurchaseService(wsdlURL, SERVICE_NAME);
         PurchasePortType port = ss.getPurchasePort();  
         
-        {
         System.out.println("Invoking purchase...");
-        com.namespacetest.purchase.PurchaseDocument _purchase_purchase = null;
-        com.namespacetest.purchase.CustomerDetailsDocument _purchase_customer = null;
+        com.namespacetest.purchase.PurchaseDocument _purchase_purchase = PurchaseDocument.Factory.newInstance();
+        Purchase purchase = _purchase_purchase.addNewPurchase();
+        OrderType order = purchase.addNewOrderDetail();
+        OrderType.Item item = order.addNewItem();
+        item.setProductName("Hello Product");
+        item.setQuantity(10);
+        item.setUnitPrice(new BigDecimal(5.0));
+        com.namespacetest.purchase.CustomerDetailsDocument _purchase_customer = CustomerDetailsDocument.Factory.newInstance();
+        CustomerType customer = _purchase_customer.addNewCustomerDetails();
+        customer.setName("Vamsi");
+        
         com.namespacetest.purchase.ConfirmationDocument _purchase__return = port.purchase(_purchase_purchase, _purchase_customer);
         System.out.println("purchase.result=" + _purchase__return);
 
-
-        }
 
         System.exit(0);
     }

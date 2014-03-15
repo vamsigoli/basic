@@ -27,21 +27,17 @@ implements WebApplicationInitializer
 
 	}
 
+	//see the mapping. all webservice requests should go to cxf servlet
+	
 	private void registerDispatcherServlet(ServletContext servletContext) {
 		WebApplicationContext dispatcherContext = createContext();
-//				DispatcherServlet dispatcherServlet = new DispatcherServlet(dispatcherContext);
-//				ServletRegistration.Dynamic dispatcher;
-//				dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
-//				dispatcher.setLoadOnStartup(1);
-//				dispatcher.addMapping("/online");
 		
 		servletContext.addListener(new ContextLoaderListener(dispatcherContext));
-//				
 				CXFServlet cxfservlet = new CXFServlet();
 				ServletRegistration.Dynamic cxfdispatcher;
 				cxfdispatcher= servletContext.addServlet("cxf", cxfservlet);
 				cxfdispatcher.setLoadOnStartup(1);
-				cxfdispatcher.addMapping("/purchase/*");
+				cxfdispatcher.addMapping("/services/*");
 				
 				
 				
