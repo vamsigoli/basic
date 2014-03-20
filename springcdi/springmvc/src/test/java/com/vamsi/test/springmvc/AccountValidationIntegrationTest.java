@@ -8,6 +8,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
+import junit.framework.AssertionFailedError;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,7 +91,7 @@ public class AccountValidationIntegrationTest {
 		try {
 			accountStr = mapper.writeValueAsString(account);
 		} catch (Exception e) {
-			// do nothing. should not come here.
+			throw new AssertionError("issues with mapping");
 		}
 
 		logger.debug("json binded account {} " + accountStr);
@@ -137,6 +139,7 @@ public class AccountValidationIntegrationTest {
 			accountStr = str.toString();
 		} catch (Exception e) {
 			// do nothing. should not come here.
+			throw new AssertionError("issues with mapping");
 		}
 
 		logger.debug("xml binded account {} " + accountStr);

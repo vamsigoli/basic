@@ -14,6 +14,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -45,6 +46,15 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 	 * the above code didnot work. the controller did not get the view name injected properly
 	 * the bean returned by this configuration is not used when request is received
 	 */
+	
+	// keep / at the end of the resource locations folder. wasted 2 hours
+	@Override  
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {  
+//        registry.addResourceHandler("/resources/**").addResourceLocations("resources");  
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");  
+//        registry.addResourceHandler("resources/**").addResourceLocations("/resources");  
+//        registry.addResourceHandler("resources/**").addResourceLocations("resources");  
+    }  
 
 	@Bean
 	public PropertySourcesPlaceholderConfigurer properties() {
@@ -150,7 +160,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 	public Jackson2ObjectMapperFactoryBean  jacksonMapper () {
 		Jackson2ObjectMapperFactoryBean  factoryBean = new Jackson2ObjectMapperFactoryBean ();
 		
-		factoryBean.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,DeserializationFeature.UNWRAP_ROOT_VALUE);
+//		factoryBean.setFeaturesToEnable(SerializationFeature.WRAP_ROOT_VALUE,DeserializationFeature.UNWRAP_ROOT_VALUE);
+		factoryBean.setFeaturesToEnable(SerializationFeature.INDENT_OUTPUT);
 		return factoryBean;
 		
 	}

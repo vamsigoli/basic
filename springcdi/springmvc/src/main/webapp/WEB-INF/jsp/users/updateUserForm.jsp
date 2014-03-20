@@ -63,12 +63,8 @@
 		<div>
 			<input type="submit" value="Register" />
 		</div>
-		<input type="hidden"                        
-        name="${_csrf.parameterName}"
-        value="${_csrf.token}"/>
         
         
-        <form:input type="hidden"  path="version" />
 	</form:form>
 	
 <p><a href="<c:url value="/logout"/>">Logout</a></p>

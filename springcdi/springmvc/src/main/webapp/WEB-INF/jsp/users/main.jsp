@@ -31,6 +31,10 @@
 		Please trigger a new job for user details using <a
 			href="<c:url value="/updateusers/userdetailsjob"/>">Update User</a>
 	</p>
+		<p>
+		Update all users for Admin <a
+			href="<c:url value="/updateusers/allusersupdatepage"/>">Update User</a>
+	</p>
 	
 
 	<p>

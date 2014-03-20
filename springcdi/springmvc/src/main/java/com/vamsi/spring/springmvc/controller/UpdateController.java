@@ -1,6 +1,7 @@
 package com.vamsi.spring.springmvc.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vamsi.spring.beans.Account;
+import com.vamsi.spring.beans.JsonJtableResponse;
 import com.vamsi.spring.forms.AccountFormValidation;
 import com.vamsi.spring.jobs.JobHelperService ;
 import com.vamsi.spring.springmvc.service.AccountService;
@@ -36,6 +38,7 @@ public class UpdateController {
 			.getLogger(AccountValidationController.class);
 
 	private static final String VN_UPD_FORM = "users/updateUserForm";
+	private static final String VN_UPD_ALL_USERS= "users/adminupdateuser";
 	private static final String VN_UPD_OK = "redirect:main";
 
 	@Autowired 
@@ -47,6 +50,23 @@ public class UpdateController {
 	public void initBinder(WebDataBinder binder) {
 		binder.setAllowedFields(new String[] { "password", "confirmPassword",
 				"firstName", "lastName", "email", "marketingOk", "acceptTerms" });
+	}
+	
+	@RequestMapping(value = "allusersupdatelist")
+	@ResponseBody
+	public JsonJtableResponse getAllUsersUpdateList(Model model, Principal principal) {
+		log.info("received request for update list" );
+		
+		List<Account> list = accountService.getAllAccounts(0, 4);
+		
+		JsonJtableResponse response = new JsonJtableResponse();
+		return response.ok(list);
+	}
+	
+	@RequestMapping(value = "allusersupdatepage")
+	public String getAllUsersUpdate(Model model, Principal principal) {
+		log.info("received request for list page " );
+		return VN_UPD_ALL_USERS;
 	}
 
 	@RequestMapping(value = "getaccount", method = RequestMethod.GET)
@@ -88,7 +108,7 @@ public class UpdateController {
 		
 		
 		redirectAttributes.addFlashAttribute("actionmessage",
-				"Update Successful");
+				"Started the job");
 		return VN_UPD_OK;
 		
 	}

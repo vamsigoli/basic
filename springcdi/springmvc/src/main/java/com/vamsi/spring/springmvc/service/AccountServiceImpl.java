@@ -2,6 +2,8 @@ package com.vamsi.spring.springmvc.service;
 
 
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,12 @@ public class AccountServiceImpl implements AccountService {
 			errors.rejectValue("username", "error.usernotpresent",
 					new String[] { username }, null);
 		}
+	}
+
+	@Override
+	public List<Account> getAllAccounts(int start, int size) {
+		
+		return accountDao.findAllAccounts(start, size);
 	}
 
 }

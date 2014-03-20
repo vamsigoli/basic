@@ -1,5 +1,7 @@
 package com.vamsi.spring.springmvc.dao;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +18,10 @@ import com.vamsi.spring.beans.Account;
 public class AccountDaoImpl extends JpaDao<Long, Account> implements AccountDao {
 
 	private static final String UPDATE_PASSWORD_SQL = "update account set password = ? where username = ?";
+	
+	private static final String PAGINATING_QUERY = " select * from ( select /*+ FIRST_ROWS(n) */ a.*, ROWNUM rnum "
+			+ " from ( select * from account order by id ) a where ROWNUM <= ? ) " 
+	+ " where rnum  >= ? ";
 	
 	private static Logger logger = LoggerFactory.getLogger(AccountDaoImpl.class);
 	
@@ -58,6 +64,14 @@ public class AccountDaoImpl extends JpaDao<Long, Account> implements AccountDao 
 		}
 		
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Account> findAllAccounts(int startIndex, int pageSize) {
+		
+		return (List<Account>)em.createNativeQuery(PAGINATING_QUERY, Account.class).setParameter(1, pageSize).setParameter(2,startIndex ).getResultList();
+		
 	}
 
 }
