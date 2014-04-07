@@ -35,12 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.vamsi.spring.forms.AccountFormValidation;
-import com.vamsi.spring.config.DispatcherServletConfig;
+//import com.vamsi.spring.config.DispatcherServletConfig;
+import com.vamsi.spring.config.SecurityConfig;
 import com.vamsi.spring.config.WebAppInitializer;
 
 @WebAppConfiguration
 @ContextConfiguration(classes = { EmbeddedDbConfig.class,
-		WebAppInitializer.class, DispatcherServletConfig.class })
+		WebAppInitializer.class, DispatcherServletConfig.class ,SecurityConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @TransactionConfiguration(defaultRollback = false)

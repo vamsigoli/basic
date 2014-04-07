@@ -13,10 +13,16 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.vamsi.spring.config.AutowiringSpringBeanJobFactory;
+import com.vamsi.spring.config.RootAppConfig;
 import com.vamsi.spring.springmvc.dao.AccountDao;
 import com.vamsi.spring.springmvc.dao.AccountDaoImpl;
 
@@ -26,6 +32,37 @@ import com.vamsi.spring.springmvc.dao.AccountDaoImpl;
 @ComponentScan({"com.vamsi.spring.springmvc.dao","com.vamsi.spring.springmvc.service"})
 public class EmbeddedDbConfig {
 	
+//	@Override
+//	public SchedulerFactoryBean schedulerFactoryBean() {
+//		// TODO Auto-generated method stub
+//		//return super.schedulerFactoryBean();
+//		return null;
+//	}
+//
+//
+//	@Override
+//	public AutowiringSpringBeanJobFactory beanJobFactory() {
+//		// TODO Auto-generated method stub
+//		return null;
+////		return super.beanJobFactory();
+//	}
+//
+//
+//	@Override
+//	public JobDetailFactoryBean accountListJob() {
+//		// TODO Auto-generated method stub
+//		return null;
+////		return super.accountListJob();
+//	}
+//
+//
+//	@Override
+//	public CronTriggerFactoryBean accountListTrigger() {
+//		// TODO Auto-generated method stub
+//		return null;
+////		return super.accountListTrigger();
+//	}
+
 	Logger logger = LoggerFactory.getLogger(EmbeddedDbConfig.class);
 	
 	@Bean
@@ -36,6 +73,15 @@ public class EmbeddedDbConfig {
 		.addScript("classpath:createaccount.sql")
 		.addScript("classpath:defaultdata.sql")
 		.build();
+	}
+	
+	
+	@Bean
+	//@Override
+	public DefaultPersistenceUnitManager defaultmanager() {
+		//DefaultPersistenceUnitManager defaultmanager = new DefaultPersistenceUnitManager();
+		//return defaultmanager;
+		return null;
 	}
 	
 	@Bean
