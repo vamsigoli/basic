@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+ <tlib-version>2.0</tlib-version>
+    <short-name>MyLibrary</short-name> <!-- Used for tools to display -->
+    <uri>FunkyTagLibrary</uri>        
+ 
+  
+    <!-- Define a Custom Tag -->
+    <tag>
+        <description>This tag prints a random number.</description>
+        <name>randomNumber</name>   <!-- Will be used to call your tag  <myTagLibrary:randomNumber greaterThan="2"/> -->
+        <tag-class>com.vamsi.util.RandomNumberGenerator</tag-class>
+        <body-content>scriptless</body-content>
+         
+        <!-- If your Custom Tag has attributes you will define them here -->
+        <attribute>
+            <name>greaterThan</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>     <!-- if true, you can have things like ${myNumber} as the attribute value -->
+        </attribute>
+            
+    </tag>
+    
+    <!-- Define a Custom EL Function -->
+    <function>
+        <name>randomColor</name> <!-- Will be used to call your El Function:   ${myTagLibrary:randomColor()} inside your JSP page -->
+        <function-class>com.vamsi.util.RandomColorGenerator</function-class>
+        <function-signature>String pickRandomColor()</function-signature>
+    </function>
+</taglib>
