@@ -1,1 +1,1 @@
-insert into account values (1,'vam123','vamsi','goli','vam@g.com',null,'Y','Y','Y',sysdate,sysdate,'USER',1);
+merge into account values (1,'vam123','vamsi','goli','vam@g.com',null,'Y','Y','Y',sysdate,sysdate,'USER',1);

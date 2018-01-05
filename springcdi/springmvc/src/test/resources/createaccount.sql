@@ -1,4 +1,4 @@
-create table Account(
+create table if not EXISTS Account(
 id integer not null,
 username varchar(50) unique not null,
 first_name varchar(50) not null,
@@ -14,4 +14,4 @@ role varchar(64) not null,
 optlock int,
 primary key (id));
 
-create sequence ACC_SEQ start with 10 increment by 1
+create sequence if not EXISTS ACC_SEQ start with 10 increment by 1

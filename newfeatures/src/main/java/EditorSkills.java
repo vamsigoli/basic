@@ -43,6 +43,9 @@ public class EditorSkills
 
     public static void main1(String[] args) {
         System.out.println("hi this is new class");
+        // alt shift up/down to move lines
+        // introduce local variable using ctrl-alt-v
+        boolean nextBoolean = ThreadLocalRandom.current().nextBoolean();
         for (int i = 0; i < 10; i++) {
             System.out.println("i = " + i);
         }
@@ -56,19 +59,21 @@ public class EditorSkills
 
         try {
             System.out.println("Hello world");
-            try {
-                BufferedReader in = new BufferedReader(new FileReader("file"));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            movedToDifferntMethod();
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // introduce local variable using ctrl-alt-v
-        boolean nextBoolean = ThreadLocalRandom.current().nextBoolean();
 
+    }
+
+    private static void movedToDifferntMethod() {
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("file"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
