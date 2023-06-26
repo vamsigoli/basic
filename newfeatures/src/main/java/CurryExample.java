@@ -39,6 +39,13 @@ public class CurryExample {
         }
     };
 
+    //the above when replaced with lambda will be as below
+    Function<Integer, Function<Integer,Integer>> step1lambda = a -> {
+        return b -> {
+            return a + b; // notice a is outside the scope of the function. similar to u above
+        };
+    };
+
     public Integer sumWithCurry2(Integer a, Integer b) {
         return step1.apply(a).apply(b);
     }

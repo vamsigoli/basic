@@ -11,7 +11,7 @@ public class PersonBuilder {
     static BiFunction<String, String, Person2> twoArgCreator = (firstName, lastName) -> new Person2(firstName, lastName);
 
     //but there are no triFunctions or QuadraFunctions in java.util. this is where currying comes into picture
-    //we can write a curry function for each  arg and finaly invoke the  constructor
+    //we can write a curry function for each  arg and finally invoke the  constructor
     static Function<String, Function<String, Person2>> twoArgConstructorCurry = firstName -> lastName -> new Person2(firstName, lastName);
     //and its usage as Person2 person21 = twoArgConstructorCurry.apply("Vamsi").apply("Goli");
 
